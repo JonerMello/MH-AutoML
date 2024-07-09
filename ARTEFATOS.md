@@ -40,27 +40,19 @@ Ademais, a lista extensa das dependências encontra-se no arquivo [setup.py.](ht
 
 
 
-### Pré-Configurações
+### Download
 
 Clone o repositório:
 git clone https://github.com/Malware-Hunter/MotoDroidV2.git 
 
-###  Instalação
-
-Para instalar os pacotes necessários você deve estar em ***src***
-```bash
-pip  install  .
-```
-
-### Execução demo:
+###  Instalação e execução demo:
 Teste funcional rápido utilizando o dataset dataset_sujo.csv, com 15000 amostras e 51 características, o dataset tem valores ausentes, strings, NaN gerado aleatoriamente. O teste mínimo leva 2 minutos num computador Core i7 com 32GB RAM.
-Para executar a ferramenta você deve chamar a classe principal **main.py**.
+Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh**.
 
 ```bash
-
-python3  view/main.py  -d  Datasets/dataset_sujo.csv  -l  class
-
+./run_demo.sh
 ```
+
 
 ### Instalação via docker
 
