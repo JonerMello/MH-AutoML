@@ -16,25 +16,19 @@ O ** framework MH-AutoML** está em fase de desenvolvimento, com foco especial e
 - lime==0.2.0.1
 - mlflow==2.11.3
 
-# 📋 Pré-Configurações
+# Download
 
 Clone o repositório:
+git clone https://github.com/Malware-Hunter/MotoDroidV2.git 
 
-    git clone https://github.com/Malware-Hunter/MotoDroidV2.git
-
-
-# ⚙️ Instalação
-Para instalar os pacotes necessários você deve estar em ***src*** 
+#  Instalação e execução demo:
+Teste funcional rápido utilizando o dataset dataset_sujo.csv, com 15000 amostras e 51 características, o dataset tem valores ausentes, strings, NaN gerado aleatoriamente. O teste mínimo leva 2 minutos num computador Core i7 com 32GB RAM.
+Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh**.
 
 ```bash
-pip install .
+./run_demo.sh
 ```
 
-# 🚀 Execução demo:
-Para executar a ferramenta voce deve chamar a classe principal main.py.
-```bash
- python3 view/main.py -d Datasets/dataset_sujo.csv -l class
-```
 
 # ⚙️ Instalação via docker
 - 1 Gerando a imagem docker.
