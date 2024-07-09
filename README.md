@@ -3,7 +3,8 @@ O ** framework MH-AutoML** está em fase de desenvolvimento, com foco especial e
 ![**Arquitetura do framework**](https://github.com/Malware-Hunter/MotoDroidV2/blob/main/imgs/fluxo-MH-AutoML.png)
 
 # 📦 Dependências
-- python ==3.5 á 3.9
+- Python 3.8.10
+- Python 3.9.13
 - pandas==1.3.3
 - numpy==1.20.1
 - scipy==1.7.1
