@@ -31,11 +31,11 @@ Os códigos utilizados para a execução ferramenta MH-AutoML, estão disponibil
 
 Testamos o código da ferramenta com as seguintes versões Python:
 
-- Python 3.8.10
+- Python 3.8.10 Ubuntu 22.04.04
 
-- Python 3.9.13
+- Python 3.9.13 Windows 10
 
-- Python 3.10.12 (incompatibilidade)
+- Python 3.10.12 Ubuntu 22.04.04 (incompatibilidade)
 
 O código da MH-autoML possui dependências com diversos pacotes e bibliotecas Python.
 Entre elas, as principais são:
