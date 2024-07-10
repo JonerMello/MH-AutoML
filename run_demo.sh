@@ -1,10 +1,7 @@
 #!/bin/bash
 
-
-# Instale os pacotes necessários
 cd src
-pip install .
+python3.8 -m pip install .
 
-# Execute a ferramenta
-python3 view/main.py -d Datasets/dataset_sujo.csv -l class
+python3.8 view/main.py -d Datasets/dataset_sujo.csv -l class
 
