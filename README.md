@@ -21,9 +21,9 @@ O ** framework MH-AutoML** está em fase de desenvolvimento, com foco especial e
 
 Clone o repositório:
 ```bash
-git clone https://github.com/Malware-Hunter/MotoDroidV2.git 
+git clone https://github.com/SBSegSF24/MH-AutoML.git 
 ```
-#  Instalação e execução demo:
+#  Instalação e execução local da demo:
 Teste funcional rápido utilizando o dataset dataset_sujo.csv, com 15000 amostras e 51 características, o dataset tem valores ausentes, strings, NaN gerado aleatoriamente. O teste mínimo leva 2 minutos num computador Core i7 com 32GB RAM.
 Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh**.
 
@@ -32,7 +32,7 @@ Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh*
 ```
 
 
-# ⚙️ Instalação via docker
+# ⚙️ Instalação e execução via docker
 - 1 Gerando a imagem docker.
 ```bash
 sudo docker build -t mh-automl-image .
@@ -60,43 +60,19 @@ python3.8 view/main.py -d Datasets/dataset_sujo.csv -l class
 
 # 🚀 Executando com os datasets do estudo
 
+Para executar os experimento basta executar a ferramenta com os mesmos datasets utilizado no estudo, utilize o parâmetro `-d` para alterar o dataset utilizado. Abaixo está um exemplo de execução:
 
-### adroit.csv
+### Exemplo de execução
 ```bash
-python3 main.py -d ../Datasets/adroit.csv -l class
+python3.8 view/main.py -d /Datasets/adroit.csv -l class
 ```
 
-### androcrawl.csv
-```bash
-python3 main.py -d ../Datasets/androcrawl.csv -l class
-```
+Substitua `/Datasets/adroit.csv` pelo caminho do dataset desejado. Aqui está a lista dos demais datasets disponíveis:
 
-### android_permissions.csv
-```bash
-python3 main.py -d ../Datasets/android_permissions.csv -l class
-```
-
-### dataset_sujo.csv
-```bash
-python3 main.py -d ../Datasets/dataset_sujo.csv -l class
-```
-
-### defensedroid_prs.csv
-```bash
-python3 main.py -d ../Datasets/defensedroid_prs.csv -l class
-```
-
-### drebin215.csv
-```bash
-python3 main.py -d ../Datasets/drebin215.csv -l class
-```
-
-### kronodroid_emulador.csv
-```bash
-python3 main.py -d ../Datasets/kronodroid_emulador.csv -l class
-```
-
-### kronodroid_real.csv
-```bash
-python3 main.py -d ../Datasets/kronodroid_real.csv -l class
-```
+- androcrawl.csv
+- android_permissions.csv
+- dataset_sujo.csv
+- defensedroid_prs.csv
+- drebin215.csv
+- kronodroid_emulador.csv
+- kronodroid_real.csv
