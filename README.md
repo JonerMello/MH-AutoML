@@ -1,6 +1,6 @@
 # MH-AutoML_V2
 O ** framework MH-AutoML** está em fase de desenvolvimento, com foco especial em transparência, interpretabilidade, gerenciamento de experimentos e versionamento de modelos. O framework abrange todas as fases de um pipeline padrão de aprendizado de máquina, incluindo pré-processamento, engenharia de características, seleção de modelo, otimização de modelo e interpretabilidade do modelo alem do gerenciamento do ciclo de vidas de ML.
-![**Arquitetura do framework**](https://github.com/Malware-Hunter/MotoDroidV2/blob/main/imgs/fluxo-MH-AutoML.png)
+![**Arquitetura do framework**]([https://github.com/Malware-Hunter/MotoDroidV2/blob/main/imgs/fluxo-MH-AutoML.png](https://raw.githubusercontent.com/Lost-User-24/MH-AutoML/main/pipeline/fluxo-MH-AutoML.png))
 
 # 📦 Dependências
 - Python 3.8.10
