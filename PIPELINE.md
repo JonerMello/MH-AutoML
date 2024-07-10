@@ -1,8 +1,3 @@
-
-Claro! Aqui está o arquivo `README.md` traduzido para o português:
-
----
-
 # MH-AutoML
 
 ## Visão Geral do Pipeline
