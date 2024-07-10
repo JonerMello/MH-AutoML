@@ -22,9 +22,9 @@ Justificativa: Código inteligível e acompanhado com boa documentação. A docu
 ## 2. Informações básicas
 Os códigos utilizados para a execução ferramenta MH-AutoML, estão disponibilizados no repositório GitHub [https://github.com/SBSegSF24/MH-AutoML](https://github.com/SBSegSF24/MH-AutoML). Nesse repositório há um README.md contendo informações sobre o fluxo de execução da ferramenta, configuração, parâmetros de entrada e instalação nos seguintes ambientes :
 
--*OS* (testado em  Ubuntu 22.04 com Python 3.8.10 e Windows com 10 3.9.13)
+-*OS* (testado em  Ubuntu 22.04 com Python 3.8.10, Python 3.10.12 e Windows com 10 3.9.13)
 
--*Containers* Docker (testado em Docker version 24.0.7, build 24.0.7-ubuntu 20.04.1)
+-*Containers* Docker (testado em Docker version 24.0.7 e Docker 24.07 build 24.0.7-ubuntu 20.04.1)
 
 
 ## 3. Instalação 
@@ -34,6 +34,8 @@ Testamos o código da ferramenta com as seguintes versões Python:
 - Python 3.8.10
 
 - Python 3.9.13
+
+- Python 3.10.12 (incompatibilidade)
 
 O código da MH-autoML possui dependências com diversos pacotes e bibliotecas Python.
 Entre elas, as principais são:
