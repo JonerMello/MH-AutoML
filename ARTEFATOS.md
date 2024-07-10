@@ -27,7 +27,8 @@ Os códigos utilizados para a execução ferramenta MH-AutoML, estão disponibil
 -*Containers* Docker (testado em Docker version 24.0.7, build 24.0.7-ubuntu 20.04.1)
 
 
-### Dependências
+## 3. Instalação 
+
 Testamos o código da ferramenta com as seguintes versões Python:
 
 - Python 3.8.10
@@ -62,8 +63,8 @@ O diretório **Datasets** contém conjuntos de dados como:
 - kronodroid_real.csv
 
 
-
 ## 5. Ambiente de testes
+
 A ferramenta foi testada nos seguintes ambientes: 
 
 -   CPU: 4+ cores
@@ -74,6 +75,9 @@ A ferramenta foi testada nos seguintes ambientes:
 
 -   MS-Windows 10 64 bit ou Ubuntu 20.04.
 
+## 6. Teste mínimo
+
+A execução do teste mínimo funcional está documentada no **README.md**.
 
 ## 7. Experimentos
 
