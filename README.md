@@ -55,6 +55,8 @@ python3.8 view/main.py -d Datasets/dataset_sujo.csv -l class
 - RAM: 16GB+
 - Storage: 2GB+ de expaço disponivel
 - MS-Windows 10 64 bit ou Ubuntu 20.04.
+- Python 3.8.10
+
 
 # 🚀 Executando com os datasets do estudo
 
