@@ -64,10 +64,10 @@ Para executar os experimento basta executar a ferramenta com os mesmos datasets 
 
 ### Exemplo de execução
 ```bash
-python3.8 view/main.py -d /Datasets/adroit.csv -l class
+python3.8 view/main.py -d Datasets/adroit.csv -l class
 ```
 
-Substitua `/Datasets/adroit.csv` pelo caminho do dataset desejado. Aqui está a lista dos demais datasets disponíveis:
+Substitua `Datasets/adroit.csv` pelo caminho do dataset desejado. Aqui está a lista dos demais datasets disponíveis:
 
 - androcrawl.csv
 - android_permissions.csv
