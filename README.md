@@ -1,5 +1,8 @@
-# MH-AutoML_V2
-O ** framework MH-AutoML** está em fase de desenvolvimento, com foco especial em transparência, interpretabilidade, gerenciamento de experimentos e versionamento de modelos. O framework abrange todas as fases de um pipeline padrão de aprendizado de máquina, incluindo pré-processamento, engenharia de características, seleção de modelo, otimização de modelo e interpretabilidade do modelo alem do gerenciamento do ciclo de vidas de ML.
+
+# MH-AutoML: Transparência, Interpretabilidade e Desempenho na Detecção de Malware Android 
+
+Neste trabalho apresentamos a MH-AutoML, uma ferramenta de AutoML especializada para o domínio de detecção de malware Android. Diferentemente de outras ferramentas de AutoML, a MH-AutoML incorpora recursos importantes de transparência e interpretabilidade em todos os estágios do pipeline. A ferramenta incorpora também métodos de seleção de características específicos ao domínio em questão, bem como otimizações de hiperparâmetros que levam a resultados muitos bons, como modelos preditivos com 95% de recall, a um custo computacional relativamente baixo.
+
 ![**Arquitetura do framework**](https://raw.githubusercontent.com/Lost-User-24/MH-AutoML/main/pipeline/fluxo-MH-AutoML.png)
 
 # 📦 Dependências
@@ -55,7 +58,7 @@ python3.8 view/main.py -d Datasets/dataset_sujo.csv -l class
 - -d Dataset a ser utilizado
 - -l  Nome da coluna de classificação 
 
-# 🖥️ Requisitos de hardware recomendados:
+# 🖥️ Requisitos recomendados:
 - CPU: 4+ cores
 - RAM: 16GB+
 - Storage: 2GB+ de expaço disponivel
@@ -67,7 +70,6 @@ python3.8 view/main.py -d Datasets/dataset_sujo.csv -l class
 
 Para executar os experimento basta executar a ferramenta com os mesmos datasets utilizado no estudo, utilize o parâmetro `-d` para alterar o dataset utilizado. Abaixo está um exemplo de execução:
 
-### Exemplo de execução
 ```bash
 python3.8 view/main.py -d Datasets/adroit.csv -l class
 ```
