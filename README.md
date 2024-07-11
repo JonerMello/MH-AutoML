@@ -6,8 +6,8 @@ Neste trabalho apresentamos a MH-AutoML, uma ferramenta de AutoML especializada 
 ![**Arquitetura do framework**](https://raw.githubusercontent.com/Lost-User-24/MH-AutoML/main/pipeline/fluxo-MH-AutoML.png)
 
 # 📦 Dependências
-- Python 3.8.10
-- Python 3.9.13
+- Python 3.8.10 Ubuntu 20.04.04
+- Python 3.9.13 Windows 10
 - pandas==1.3.3
 - numpy==1.20.1
 - scipy==1.7.1
@@ -43,17 +43,13 @@ Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh*
 # ⚙️ Instalação e execução via docker
 - 1 Gerando a imagem docker.
 ```bash
-sudo docker build -t mh-automl-image .
+sudo docker build -t mhautoml:latest .
 ```
 - 2 Executando a imagem docker.
 ```bash
-sudo docker run -it --name mh-automl-container mh-automl-image /bin/bash
+sudo docker run -v $(readlink -f . ):/mhautoml -it mhautoml
 ```
-- 3 Executando a ferramenta no docker.
 
-```bash
-python3.8 view/main.py -d Datasets/dataset_sujo.csv -l class
-```
 ## 🏷️ Significado das flags 
 - -d Dataset a ser utilizado
 - -l  Nome da coluna de classificação 
