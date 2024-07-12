@@ -26,7 +26,7 @@ Clone o repositório:
 ```bash
 git clone https://github.com/SBSegSF24/MH-AutoML.git 
 ```
-#  Instalação e execução local da demo:
+#  Instalação e execução demo:
 Teste funcional rápido utilizando o dataset dataset_sujo.csv, com 15000 amostras e 51 características, o dataset tem valores ausentes, strings, NaN gerado aleatoriamente. O teste mínimo leva 2 minutos num computador Core i7 com 32GB RAM.
 Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh**.
 
