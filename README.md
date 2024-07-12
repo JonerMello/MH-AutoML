@@ -31,6 +31,12 @@ Teste funcional rápido utilizando o dataset dataset_sujo.csv, com 15000 amostra
 Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh**.
 
 - 1 Prepare seu ambiente executando ./config.sh
+*Caso tenha problema de permissão negada utilize o comando:*
+```bash
+chmod +x config.sh
+chmod +x run_demo.sh
+chmod +x run_experimento.sh
+```
 
 ```bash
 ./config.sh
