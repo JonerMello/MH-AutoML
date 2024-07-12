@@ -76,7 +76,7 @@ Hardware: Intel Core i7-10700, 8 cores, 16 GB RAM. Software: Ubuntu 24.02 LTS, P
 
 Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Windows 11 Pro compilação 22631.3880, Python 3.9.13
 
-# 🚀 Executando o experimento do estudo
+# 🚀 Reprodução do estudo
 
 Para executar os experimento com a ferramenta MH-AutoML basta executar o script run_experimento.sh, esse script executa a ferramenta para cada dataset utilizado no experimento. Abaixo está o comando de execução:
 *Para execução completa pode levar mais de 2 horas nas segintes configurações:*
