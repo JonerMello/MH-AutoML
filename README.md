@@ -70,18 +70,11 @@ Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Windows 11 Pro compil
 
 # 🚀 Executando com os datasets do estudo
 
-Para executar os experimento basta executar a ferramenta com os mesmos datasets utilizado no estudo, utilize o parâmetro `-d` para alterar o dataset utilizado. Abaixo está um exemplo de execução:
+Para executar os experimento com a ferramenta MH-AutoML basta executar o script run_experimento.sh, esse script executa a ferramenta para cada dataset utilizado no experimento. Abaixo está o comando de execução:
+*Para execução completa pode levar mais de 2 horas nas segintes configurações:*
+Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, Linux version 5.15.153.1-microsoft-standard-WSL2, Docker version 24.0.7 (build ced0996), Python 3.8.10
 
 ```bash
-python3.8 view/main.py -d Datasets/adroit.csv -l class
+./run_experimento.sh
 ```
 
-Substitua `Datasets/adroit.csv` pelo caminho do dataset desejado. Aqui está a lista dos demais datasets disponíveis:
-
-- androcrawl.csv
-- android_permissions.csv
-- dataset_sujo.csv
-- defensedroid_prs.csv
-- drebin215.csv
-- kronodroid_emulador.csv
-- kronodroid_real.csv
