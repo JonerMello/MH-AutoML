@@ -40,5 +40,5 @@ RUN python3.8 -m pip install .
 EXPOSE 5000
 
 # Comando para executar o script Python principal
-CMD ["python3.8", "view/main.py", "-d", "Datasets/dataset_sujo.csv", "-l", "class"]
+CMD ["python3.8", "view/main.py", "-d", "../Datasets/dataset_sujo.csv", "-l", "class"]
 
