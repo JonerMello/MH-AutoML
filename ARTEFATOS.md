@@ -24,7 +24,7 @@ Os códigos utilizados para a execução ferramenta MH-AutoML, estão disponibil
 
 -*OS* (testado em  Ubuntu 22.04 com Python 3.8.10, Python 3.10.12 e Windows com 10 3.9.13)
 
--*Containers* Docker (testado em Docker version 24.0.7 e Docker 24.07 build 24.0.7-ubuntu 20.04.1)
+-*Containers* Docker (testado em Docker version 24.0.7 build 24.0.7-ubuntu 20.04.1)
 
 
 ## 3. Instalação 

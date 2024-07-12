@@ -58,9 +58,15 @@ sudo docker run -v $(readlink -f . ):/mhautoml -it mhautoml
 - CPU: 4+ cores
 - RAM: 16GB+
 - Storage: 2GB+ de expaço disponivel
-- MS-Windows 10 64 bit ou Ubuntu 20.04.
+- MS-Windows 10 ou 11 64 bit ou Ubuntu 20.04.
 - Python 3.8.10
 
+# Ambientes testados
+Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, Linux version 5.15.153.1-microsoft-standard-WSL2, Docker version 24.0.7 (build ced0996), Python 3.8.10
+
+Hardware: Intel Core i7-10700, 8 cores, 16 GB RAM. Software: Ubuntu 24.02 LTS, Python 3.12.3,Docker 26.1.4
+
+Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Windows 11 Pro compilação 22631.3880, Python 3.9.13
 
 # 🚀 Executando com os datasets do estudo
 
