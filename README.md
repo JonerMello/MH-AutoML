@@ -38,7 +38,7 @@ chmod +x run_demo.sh
 chmod +x run_experimento.sh
 ```
 
-O comando config.sh vai criar uma ambiente virtual com python3.8.10 para que a ferramenta execute sem algum problema de compatibilidade.
+O comando config.sh vai BAIXAR E INSTALAR o python3.8.10 em seu ambiente para que a ferramenta execute sem algum problema de compatibilidade.
 
 ```bash
 ./config.sh
