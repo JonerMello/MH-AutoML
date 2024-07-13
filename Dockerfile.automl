@@ -1,0 +1,52 @@
+# Use an official Ubuntu runtime as a parent image
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Define a variável de build para a ferramenta AutoML
+ARG AUTOML_TOOL
+# Atualiza os pacotes e instala dependências necessárias
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    python3.10 \
+    python3.10-venv \
+    python3.10-dev \
+    python3.10-distutils \
+    python3-pip \
+    unzip \
+    tzdata \
+    wget
+
+# Define o fuso horário
+RUN ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
+    dpkg-reconfigure --frontend noninteractive tzdata
+
+# Instalação das dependências básicas
+RUN pip install --no-cache-dir pandas scikit-learn setuptools wheel
+
+# Copia o conteúdo do diretório atual para o contêiner em /app
+COPY src/autogluon_test.py /app
+COPY src/autopytorch_test.py /app
+COPY src/autosklearn_test.py /app
+COPY src/hypergbm_test.py /app
+COPY src/lightautoml_test.py /app
+COPY src/mljar_test.py /app
+COPY src/tpot_test.py /app
+
+# Copia a pasta de datasets para o contêiner
+COPY Datasets /app/datasets
+
+# Copia o entrypoint script para o contêiner
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Torna o entrypoint script executável
+RUN chmod +x /app/entrypoint.sh
+
+# Define o diretório de trabalho para /app
+WORKDIR /app
+
+# Define o entrypoint script
+ENTRYPOINT ["/app/entrypoint.sh"]
