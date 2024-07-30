@@ -85,4 +85,21 @@ Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, L
 ```bash
 ./run_experimento.sh
 ```
+Para executar os experimentos com [AutoGluon](https://github.com/autogluon/autogluon), [AutoPytorch](https://github.com/automl/Auto-PyTorch), [Auto-Sklearn](https://github.com/automl/auto-sklearn), [TPOT](https://github.com/EpistasisLab/tpot), [MLJAR](https://github.com/mljar/mljar-supervised), [HyperGBM](https://github.com/DataCanvasIO/HyperGBM) e [LightAutoML](https://github.com/sb-ai-lab/LightAutoML) em todos os datasets, use o script run_automl_tools.sh:
+
+```bash
+sudo ./run_automl_tools.sh <output_directory>
+```
+
+Para uma demonstração no dataset Adroit, use o script run_automl_demo.sh:
+
+```bash
+sudo ./run_automl_demo.sh <output_directory>
+```
+
+*Para execução completa pode levar aproximadamente 28 horas e para a demonstração aproximadamente 3 horas nas segintes configurações:*
+Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, Docker version 24.0.7 (build ced0996), Python 3.10.12
+
+
+
 
