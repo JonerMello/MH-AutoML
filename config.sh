@@ -54,5 +54,4 @@ fi
 # Criar e ativar um ambiente virtual para Python 3.8.10
 python3.8 -m venv env_python3.8
 source env_python3.8/bin/activate
-cd src
-python3.8 -m pip install .
+
