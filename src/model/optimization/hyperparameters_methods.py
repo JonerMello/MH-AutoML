@@ -38,7 +38,7 @@ class Hyperparameters:
     def get_models_params(self, trial):
         """get_models_params: Function used to select and instantiate a machine learning classifier from a list of classifier options, including "RandomForestClassifier," "DecisionTreeClassifier," "ExtraTreesClassifier," and "SVC." The classifier selection is done using the "trial.suggest" function from the Optuna library. Finally, the code instantiates a "VotingClassifier" using the selected classifier and returns the VotingClassifier instance."""
 
-        classifier_name = trial.suggest_categorical("classifier", ["RandomForestClassifier", "DecisionTreeClassifier", "ExtraTreesClassifier","KNN", "CatBoost"])
+        classifier_name = trial.suggest_categorical("classifier", ["RandomForestClassifier", "DecisionTreeClassifier", "ExtraTreesClassifier", "CatBoost"])
 
         criterion = trial.suggest_categorical("criterion", ["gini", "entropy"])
         n_estimators = trial.suggest_int("n_estimators", 50, 150)
