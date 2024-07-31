@@ -35,7 +35,7 @@ Para executar a ferramenta você deve chamar a classe principal **./run_demo.sh*
 ```bash
 chmod +x config.sh
 chmod +x run_demo.sh
-chmod +x run_experimento.sh
+chmod +x run_reproducao_mh_automl.sh
 ```
 
 O comando config.sh vai BAIXAR E INSTALAR o python3.8.10 em seu ambiente para que a ferramenta execute sem algum problema de compatibilidade.
@@ -83,7 +83,7 @@ Para executar os experimento com a ferramenta MH-AutoML basta executar o script 
 Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, Linux version 5.15.153.1-microsoft-standard-WSL2, Docker version 24.0.7 (build ced0996), Python 3.8.10
 
 ```bash
-./run_experimento.sh
+./run_reproducao_mh_automl.sh
 ```
 Para executar os experimentos com [AutoGluon](https://github.com/autogluon/autogluon), [AutoPytorch](https://github.com/automl/Auto-PyTorch), [Auto-Sklearn](https://github.com/automl/auto-sklearn), [TPOT](https://github.com/EpistasisLab/tpot), [MLJAR](https://github.com/mljar/mljar-supervised), [HyperGBM](https://github.com/DataCanvasIO/HyperGBM) e [LightAutoML](https://github.com/sb-ai-lab/LightAutoML) em todos os datasets, use o script run_automl_tools.sh:
 
