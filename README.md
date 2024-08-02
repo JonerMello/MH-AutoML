@@ -100,7 +100,8 @@ sudo ./run_tools_docker.sh <output_directory> --d
 *Para execução completa pode levar aproximadamente 28 horas e para a demonstração aproximadamente 3 horas nas segintes configurações:*
 Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, Docker version 24.0.7 (build ced0996), Python 3.10.12
 
-É possível ainda instalar e executar cada ferramenta manualmente (este método não é recomendado devido aos conflitos de dependências das ferramentas):
+Embora não seja recomendado devido a possíveis conflitos de dependências, você pode instalar e executar cada ferramenta manualmente seguindo as instruções abaixo:
+
 Para instalar e executar a reprodução para o autoPyTorch:
 ```bash
 pip install autoPyTorch
