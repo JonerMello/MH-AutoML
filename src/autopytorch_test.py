@@ -58,7 +58,7 @@ def run_autopytorch(dataset_file):
     return results
 
 # Função principal para processar todos os arquivos CSV na pasta
-def processar_todos_csv_pasta(pasta):
+def processar_todos_csv_pasta(pasta, output_path):
     resultados = []
     
     # Itera sobre todos os arquivos na pasta
@@ -73,26 +73,30 @@ def processar_todos_csv_pasta(pasta):
 
     # Salva todos os resultados em um único DataFrame
     resultados_df = pd.DataFrame(resultados)
-    resultados_df.to_csv("/app/output/resultados_autopytorch.csv", index=False)
-    print("Resultados salvos em CSV no diretório /app/output.")
+    resultados_df.to_csv(os.path.join(output_path, "resultados_autopytorch.csv"), index=False)
+    print(f"Resultados salvos em CSV no diretório {output_path}.")
 
 # Função para processar um único arquivo CSV
-def processar_arquivo_csv(arquivo_csv):
+def processar_arquivo_csv(arquivo_csv, output_path):
     resultado = run_autopytorch(arquivo_csv)
     if resultado:
         resultados_df = pd.DataFrame([resultado])
-        resultados_df.to_csv("/app/output/resultados_autopytorch.csv", index=False)
-        print("Resultado salvo em CSV no diretório /app/output.")
+        resultados_df.to_csv(os.path.join(output_path, "resultados_autopytorch.csv"), index=False)
+        print(f"Resultado salvo em CSV no diretório {output_path}.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Processa arquivos CSV com AutoPyTorch.")
-    parser.add_argument("input_path", type=str, help="Caminho para a pasta com datasets ou um único arquivo CSV.")
-    
+    parser.add_argument("-i", "--input", type=str, required=True, help="Caminho para a pasta com datasets ou um único arquivo CSV.")
+    parser.add_argument("-o", "--output", type=str, default="/output", help="Caminho para o diretório onde os resultados serão salvos.")
+  
     args = parser.parse_args()
     
-    if os.path.isdir(args.input_path):
-        processar_todos_csv_pasta(args.input_path)
-    elif os.path.isfile(args.input_path) and args.input_path.endswith(".csv"):
-        processar_arquivo_csv(args.input_path)
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
+    
+    if os.path.isdir(args.input):
+        processar_todos_csv_pasta(args.input, args.output)
+    elif os.path.isfile(args.input) and args.input.endswith(".csv"):
+        processar_arquivo_csv(args.input, args.output)
     else:
         print("O caminho fornecido não é um arquivo CSV válido ou uma pasta.")
