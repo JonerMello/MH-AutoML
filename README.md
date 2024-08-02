@@ -100,6 +100,46 @@ sudo ./run_tools_docker.sh <output_directory> --d
 *Para execução completa pode levar aproximadamente 28 horas e para a demonstração aproximadamente 3 horas nas segintes configurações:*
 Hardware: Intel(R) Core(TM) i7-1185G7, 32GB RAM. Software: Ubuntu 22.04.4 LTS, Docker version 24.0.7 (build ced0996), Python 3.10.12
 
+É possível ainda instalar e executar cada ferramenta manualmente (este método não é recomendado devido aos conflitos de dependências das ferramentas):
+Para instalar e executar a reprodução para o autoPyTorch:
+```bash
+pip install autoPyTorch
+python3 autopytorch_test.py -i ./Datasets -o <output_directory>
+```
 
+Para instalar e executar a reprodução para o auto-sklearn:
+```bash
+pip install auto-sklearn
+python3 autosklearn_test.py -i ./Datasets -o <output_directory>
+```
 
+Para instalar e executar a reprodução para o hypergbm:
+```bash
+pip install hypergbm
+python3 hypergbm_test.py -i ./Datasets -o <output_directory>
+```
+
+Para instalar e executar a reprodução para o lightautoml:
+```bash
+pip install lightautoml
+python3 lightautoml_test.py -i ./Datasets -o <output_directory>
+```
+
+Para instalar e executar a reprodução para o mljar-supervised:
+```bash
+pip install mljar-supervised
+python3 mljar_test.py -i ./Datasets -o <output_directory>
+```
+
+Para instalar e executar a reprodução para o autogluon:
+```bash
+pip install autogluon
+python3 autogluon_test.py -i ./Datasets -o <output_directory>
+```
+
+Para instalar e executar a reprodução para o tpot:
+```bash
+pip install tpot
+python3 tpot_test.py -i ./Datasets -o <output_directory>
+```
 
