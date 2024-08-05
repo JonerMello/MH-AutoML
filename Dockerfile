@@ -3,7 +3,6 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
-WORKDIR /MH-AutoML
 
 # Atualiza os pacotes e instala dependências necessárias
 RUN apt-get update && apt-get install -y software-properties-common
@@ -20,7 +19,9 @@ RUN apt-get install -y tzdata
 RUN dpkg-reconfigure --frontend noninteractive tzdata
 
 # Copia o código para o diretório de trabalho
-COPY ./ /MH-AutoML/
+WORKDIR /MH-AutoML
+COPY . ./
+
 WORKDIR /MH-AutoML/src
 
 # Verifica e instala o pip3 se necessário
@@ -41,4 +42,3 @@ EXPOSE 5000
 
 # Comando para executar o script Python principal
 CMD ["python3.8", "view/main.py", "-d", "../Datasets/dataset_sujo.csv", "-l", "class"]
-

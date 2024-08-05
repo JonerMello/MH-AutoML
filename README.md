@@ -55,7 +55,7 @@ sudo docker build -t mhautoml:latest .
 ```
 - 2 Executando a imagem docker.
 ```bash
-sudo docker run -v $(readlink -f . ):/mhautoml -it mhautoml
+sudo docker run --network host  -v $(readlink -f . ):/MH-AutoML -it mhautoml 
 ```
 
 ## 🏷️ Significado das flags 
