@@ -143,4 +143,8 @@ Para instalar e executar a reprodução para o tpot:
 pip install tpot
 python3 tpot_test.py -i ./Datasets -o <output_directory>
 ```
+## Agradecimentos
+
+- Angelo Gaspar Diniz Nogueira pela revisão e contribuição no repositório da ferramenta.
+- Paulo pela contribuição no desenvolvimento da ferramenta.
 
