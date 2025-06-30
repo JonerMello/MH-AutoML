@@ -1,0 +1,340 @@
+@startuml MH-AutoML Class Diagram
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontSize 10
+skinparam classFontName Arial
+skinparam packageStyle rectangle
+
+title MH-AutoML: Malware Hunter AutoML - Class Diagram
+
+' ========================================
+' PACKAGE: VIEW
+' ========================================
+package "View" {
+    class Main {
+        - dataset_url: str
+        - label: str
+        - log_level: int
+        - remove_duplicates: bool
+        - remove_missing_values: bool
+        - remove_outliers: bool
+        - one_hot_encoder: bool
+        - do_label_encode: bool
+        - balance_classes: str
+        - feature_selection: str
+        + __init__(dataset_url, label, log_level, ...)
+        + run_core(): void
+    }
+}
+
+' ========================================
+' PACKAGE: CONTROLLER
+' ========================================
+package "Controller" {
+    class Core {
+        - dataset_url: str
+        - label: str
+        - log_level: str
+        - remove_duplicates: bool
+        - remove_missing_values: bool
+        - remove_outliers: bool
+        - one_hot_encoder: bool
+        - do_label_encode: bool
+        - balance_classes: str
+        - feature_selection_method: str
+        - use_pca: bool
+        - use_anova: bool
+        - use_lasso: bool
+        - measurements: list
+        - logger: Logger
+        + __init__(dataset_url, label, log_level, ...)
+        + create_results_folder(folder_name): str
+        + display_data_info(dataset_df): DataInfo
+        + preprocess(dataset_df, label): tuple
+        + enable_pca(): void
+        + enable_anova(): void
+        + enable_lasso(): void
+        + feature_selection(X, y): tuple
+        + optimize_hyperparameters(X, y): tuple
+        + evaluate_model(model, X_test, y_test): dict
+        + start_mlflow_ui(): void
+        + open_browser(): void
+        + measure_performance(): void
+        + save_performance(step_name, start_time, start_memory): void
+        + export_to_csv(filename): void
+        + plot_performance(filename): void
+        + print_optimized_pipeline(pipeline): void
+        + log_artifact_if_exists(file_path, artifact_path): void
+        + run(): void
+    }
+}
+
+' ========================================
+' PACKAGE: MODEL - PREPROCESSING
+' ========================================
+package "Model::Preprocessing" {
+    class DataInfo {
+        - label: str
+        - dataset: DataFrame
+        - logger: Logger
+        - system_info_result: DataFrame
+        - info_table_result: DataFrame
+        - data_types_result: DataFrame
+        - balance_info_result: DataFrame
+        - duplicates_missing_result: DataFrame
+        - features_info_result: DataFrame
+        + __init__(label, dataset)
+        + display_dataframe_info(): void
+        + system_info(): DataFrame
+        + display_info_table(): DataFrame
+        + display_data_types(): DataFrame
+        + display_balance_info(): DataFrame
+        + display_duplicates_missing(): DataFrame
+        + display_features_info(): DataFrame
+        + calculate_duplicate_count(found_col): int
+        + is_balanced_dataset(): bool
+        + has_categorical_rows(): bool
+        + has_android_permissions(): list
+        + has_android_api_calls(): list
+        + is_crypto_signature(data): bool
+        + find_and_drop_crypto_column(): str
+        + save_data_info_to_html(output_file_path): void
+    }
+
+    class DataCleaning {
+        - remove_duplicates: bool
+        - remove_missing_values: bool
+        - remove_outliers: bool
+        - label: str
+        - logger: Logger
+        + __init__(remove_duplicates, remove_missing_values, remove_outliers, label)
+        + fit(dataset, label): self
+        + transform(dataset, label): DataFrame
+        + remove_outliers_step(dataset): DataFrame
+        + remove_duplicates_step(dataset): DataFrame
+        + remove_missing_values_step(dataset): DataFrame
+        + custom_convert(value): any
+        + plot_distribution_before_after_outliers_removal(dataset, results_folder): void
+        + plot_missing_values_heatmap(dataset, results_folder): void
+    }
+
+    class DataTransformation {
+        - label: str
+        - one_hot_encoder: bool
+        - do_label_encode: bool
+        - logger: Logger
+        + __init__(label, one_hot_encoder, do_label_encode)
+        + fit(dataset, label): self
+        + transform(dataset, label): tuple
+        + one_hot_encode(X): DataFrame
+        + label_encode(y): array
+    }
+}
+
+' ========================================
+' PACKAGE: MODEL - FEATURE ENGINEERING
+' ========================================
+package "Model::FeatureEngineering" {
+    class FeatureSelection {
+        - num_components: int
+        - pca: PCA
+        - anova: bool
+        - k_features: int
+        - lasso: bool
+        - alpha: float
+        - balance_classes: bool
+        - feature_names: list
+        - original_features: list
+        - applied_method: str
+        - pca_components_info: dict
+        - selected_features_info: dict
+        - logger: Logger
+        + __init__(pca, num_components, anova, k_features, lasso, alpha, balance_classes)
+        + fit(X, y): self
+        + transform(X): array
+        + get_feature_names(): list
+        + get_transformation_info(): dict
+        + balance_data_SMOTE(X, y): tuple
+        + balance_data(X, y): tuple
+        + plot_pca_biplot(X_pca, pca, X_columns, y, sample_size, save_path): void
+        + plot_lasso_feature_importance_01(selected_features, lasso_coef, save_path): void
+        + get_significant_features(f_statistic, p_value, feature_names, significance_threshold, save_path): void
+        + plot_anova_features(scores, feature_names, title, top_n): void
+        + plot_lasso_features(coefficients, feature_names, title): void
+        + plot_lasso_feature_importance(save_path): void
+    }
+}
+
+' ========================================
+' PACKAGE: MODEL - OPTIMIZATION
+' ========================================
+package "Model::Optimization" {
+    class Hyperparameters {
+        - X: array
+        - y: array
+        - logger: Logger
+        + __init__(X, y)
+        + get_models_params(trial): VotingClassifier
+        + __call__(trial): float
+        + calculate_metrics_and_save_results(study, X_train_selected, X_test_selected, y_train, y_test): tuple
+    }
+
+    class GridSearch {
+        + __init__()
+        + search_hyperparameters(X, y): dict
+    }
+
+    class HyperparameterOptimization {
+        + __init__()
+        + optimize(X, y): dict
+    }
+}
+
+' ========================================
+' PACKAGE: MODEL - INTERPRETABILITY
+' ========================================
+package "Model::Interpretability" {
+    class Interpretability {
+        - best_model: any
+        - X_train_selected: array
+        - X_test_selected: array
+        - y_train: array
+        - feature_selection_info: dict
+        - results_folder: str
+        - applied_method: str
+        - feature_names: list
+        - original_features: list
+        + __init__(best_model, X_train_selected, X_test_selected, y_train, feature_selection_info, results_folder)
+        + explain_model(): tuple
+        + _explain_pca_model(timestamp): tuple
+        + _explain_pca_components(): dict
+        + _explain_feature_selected_model(timestamp): tuple
+        + _explain_original_features(timestamp): tuple
+        + _generate_shap_explanation(timestamp, is_pca): str
+        + _plot_feature_selection_importance(timestamp): str
+        + _generate_lime_explanation(timestamp, is_pca): tuple
+        + plot_global_feature_importance(): str
+        + partial_dependence_plots(features, n_samples): void
+        + lime_explanation(best_trial, X_train, y_train, X_test, feature_names): any
+        + explanation(best_trial, X_train, y_train, X_test, feature_names): array
+    }
+}
+
+' ========================================
+' PACKAGE: MODEL - TOOLS
+' ========================================
+package "Model::Tools" {
+    class DatasetValidation {
+        - dataset_url: str
+        - label: str
+        - logger: Logger
+        + __init__(dataset_url, label)
+        + validate_dataset(): bool
+        + load_data(): DataFrame
+    }
+
+    class MLflowManager {
+        + __init__()
+        + setup_mlflow(): void
+        + log_experiment(experiment_name, run_name): void
+        + log_metrics(metrics): void
+        + log_artifacts(artifacts): void
+        + save_model(model, model_name): void
+    }
+
+    class ReportGenerator {
+        - results_folder: str
+        + __init__(results_folder)
+        + generate_report(pipeline, display_data, study, best_model, model_name, model_params, select_results, report, y_test, y_pred, feature_names, feature_selection_info, shap_exp_filepath, exp_filepath, lime_exp_filepath): void
+        + generate_performance_plots(y_test, y_pred, results_folder): void
+        + generate_confusion_matrix(y_test, y_pred, results_folder): void
+        + generate_roc_curve(y_test, y_pred_proba, results_folder): void
+        + generate_precision_recall_curve(y_test, y_pred_proba, results_folder): void
+    }
+}
+
+' ========================================
+' PACKAGE: EXTERNAL DEPENDENCIES
+' ========================================
+package "External Dependencies" {
+    class BaseEstimator {
+        + fit(X, y): self
+        + transform(X): array
+        + predict(X): array
+    }
+
+    class TransformerMixin {
+        + fit_transform(X, y): array
+    }
+
+    class VotingClassifier {
+        - estimators: list
+        - voting: str
+        + fit(X, y): self
+        + predict(X): array
+        + predict_proba(X): array
+    }
+
+    class LGBMClassifier {
+        + fit(X, y): self
+        + predict(X): array
+        + predict_proba(X): array
+    }
+
+    class CatBoostClassifier {
+        + fit(X, y): self
+        + predict(X): array
+        + predict_proba(X): array
+    }
+}
+
+' ========================================
+' RELATIONSHIPS
+' ========================================
+
+' View -> Controller
+Main --> Core : uses
+
+' Controller -> Model
+Core --> DataInfo : creates
+Core --> DataCleaning : creates
+Core --> DataTransformation : creates
+Core --> FeatureSelection : creates
+Core --> Hyperparameters : creates
+Core --> Interpretability : creates
+Core --> DatasetValidation : creates
+Core --> ReportGenerator : creates
+
+' Inheritance relationships
+DataCleaning --|> BaseEstimator
+DataCleaning --|> TransformerMixin
+DataTransformation --|> BaseEstimator
+DataTransformation --|> TransformerMixin
+FeatureSelection --|> BaseEstimator
+FeatureSelection --|> TransformerMixin
+
+' Composition relationships
+Hyperparameters --> VotingClassifier : creates
+VotingClassifier --> LGBMClassifier : contains
+VotingClassifier --> CatBoostClassifier : contains
+
+' Dependencies
+Core --> MLflowManager : uses
+Core --> optuna : uses
+Core --> mlflow : uses
+Core --> shap : uses
+Core --> lime : uses
+
+' Data flow
+DataInfo --> DataCleaning : provides cleaned data
+DataCleaning --> DataTransformation : provides transformed data
+DataTransformation --> FeatureSelection : provides features
+FeatureSelection --> Hyperparameters : provides selected features
+Hyperparameters --> Interpretability : provides best model
+ReportGenerator --> Core : generates reports
+
+' Validation
+DatasetValidation --> Core : validates input
+
+@enduml 

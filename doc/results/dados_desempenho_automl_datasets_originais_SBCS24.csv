@@ -1,0 +1,73 @@
+dataset,ferramenta,precisao,recall,f1,MCC,tempo
+kronodroid_emulador,AutoGluon,97.54,96.93,97.23,94.95,00:17:32
+kronodroid_emulador,MH-AutoML,96.73,96.73,96.73,93.46,00:29:02
+kronodroid_emulador,Auto-Sklearn,97.02,96.40,96.71,93.99,00:59:56
+kronodroid_emulador,TPOT,96.66,96.71,96.68,93.93,01:45:42
+kronodroid_emulador,AutoPyTorch,97.19,96.55,96.87,94.29,01:46:37
+kronodroid_emulador,LightAutoML,97.32,96.97,97.14,94.78,00:16:23
+kronodroid_emulador,HyperGBM,90.55,94.03,92.26,85.68,00:00:43
+kronodroid_emulador,MLJar,96.57,96.26,96.42,93.46,00:03:03
+kronodroid_real,AutoGluon,98.29,97.51,97.90,95.53,00:21:37
+kronodroid_real,MH-AutoML,96.54,96.59,96.56,93.13,00:44:39
+kronodroid_real,Auto-Sklearn,98.10,97.29,97.69,95.10,01:01:08
+kronodroid_real,TPOT,97.56,96.63,97.09,93.83,01:02:24
+kronodroid_real,AutoPyTorch,97.74,97.10,97.42,94.50,01:58:57
+kronodroid_real,LightAutoML,98.24,97.45,97.84,95.42,00:16:44
+kronodroid_real,HyperGBM,96.96,96.34,96.65,92.87,00:01:17
+kronodroid_real,MLJar,98.38,96.54,97.45,94.63,00:07:18
+androcrawl,AutoGluon,95.19,91.00,93.05,92.29,00:06:36
+androcrawl,MH-AutoML,96.53,95.41,95.96,91.94,00:16:35
+androcrawl,Auto-Sklearn,93.66,93.52,93.59,92.85,01:01:02
+androcrawl,TPOT,93.54,91.60,92.56,91.70,00:53:45
+androcrawl,AutoPyTorch,94.09,92.14,93.11,92.32,01:50:27
+androcrawl,LightAutoML,94.21,92.44,93.31,92.55,00:11:53
+androcrawl,HyperGBM,94.27,91.84,93.04,92.25,00:00:46
+androcrawl,MLJar,94.17,91.79,92.97,92.17,00:02:26
+android_permissions,AutoGluon,68.27,97.55,80.33,13.21,00:01:48
+android_permissions,MH-AutoML,63.10,53.79,49.88,14.08,00:05:44
+android_permissions,Auto-Sklearn,67.82,99.19,80.56,12.73,01:00:24
+android_permissions,TPOT,68.52,97.30,80.41,14.69,00:58:42
+android_permissions,AutoPyTorch,66.96,99.94,80.19,0.98,01:52:04
+android_permissions,LightAutoML,68.94,95.97,80.24,15.71,00:11:18
+android_permissions,HyperGBM,68.35,96.83,80.13,12.78,00:00:17
+android_permissions,MLJar,69.08,95.33,80.11,15.79,00:01:28
+defensedroid_prs,AutoGluon,95.40,88.92,92.04,84.36,00:07:48
+defensedroid_prs,MH-AutoML,91.71,91.73,91.65,83.45,00:31:51
+defensedroid_prs,Auto-Sklearn,93.90,88.43,91.08,82.29,01:03:05
+defensedroid_prs,TPOT,94.61,89.40,91.93,83.95,00:56:56
+defensedroid_prs,AutoPyTorch,94.80,89.97,92.32,84.68,01:41:43
+defensedroid_prs,LightAutoML,95.41,89.08,92.13,84.52,00:13:11
+defensedroid_prs,HyperGBM,93.06,88.92,90.94,81.81,00:01:12
+defensedroid_prs,MLJar,94.92,89.24,91.99,84.14,00:44:06
+drebin,AutoGluon,99.18,97.59,98.38,97.44,00:02:06
+drebin,MH-AutoML,98.86,98.51,98.68,97.37,00:06:49
+drebin,Auto-Sklearn,99.27,97.41,98.33,97.37,01:00:26
+drebin,TPOT,99.27,97.68,98.47,97.58,00:49:42
+drebin,AutoPyTorch,98.91,97.50,98.20,97.15,01:41:29
+drebin,LightAutoML,99.37,97.86,98.61,97.80,00:12:03
+drebin,HyperGBM,98.91,97.06,97.97,96.80,00:00:33
+drebin,MLJar,98.39,97.95,98.17,97.08,00:01:41
+adroit,AutoGluon,88.65,79.26,83.70,77.60,00:01:17
+adroit,MH-AutoML,90.82,86.93,88.56,77.66,00:03:37
+adroit,Auto-Sklearn,89.53,79.26,84.09,78.23,01:01:15
+adroit,TPOT,91.03,79.12,84.66,79.20,00:30:45
+adroit,AutoPyTorch,88.09,79.41,83.53,77.30,01:44:23
+adroit,LightAutoML,91.13,77.06,83.51,77.88,00:08:02
+adroit,HyperGBM,91.10,76.76,83.32,77.66,00:00:12
+adroit,MLJar,90.39,77.50,83.45,77.66,00:01:38
+defensedroid_apicall,AutoGluon,95.49,93.84,94.66,89.51,00:05:24
+defensedroid_apicall,MH-AutoML,94.07,94.02,94.03,88.10,01:03:14
+defensedroid_apicall,Auto-Sklearn,96.34,93.65,94.97,90.20,01:03:44
+defensedroid_apicall,TPOT,94.41,92.59,93.49,87.23,00:53:44
+defensedroid_apicall,AutoPyTorch,96.31,93.07,94.66,89.65,01:59:16
+defensedroid_apicall,LightAutoML,96.82,93.74,95.26,90.79,00:17:24
+defensedroid_apicall,HyperGBM,94.58,92.30,93.42,87.14,00:01:43
+defensedroid_apicall,MLJar,94.76,93.94,94.35,88.84,01:06:45
+MH-100 - 4k_features,AutoGluon,89.22,87.88,88.55,87.32,00:34:05
+MH-100 - 4k_features,MH-AutoML,90.47,94.22,92.23,84.60,05:41:05
+MH-100 - 4k_features,Auto-Sklearn,86.25,90.85,88.49,87.24,10:02:41
+MH-100 - 4k_features,TPOT,87.24,86.67,86.95,85.55,01:04:03
+MH-100 - 4k_features,AutoPyTorch,86.66,89.19,87.90,86.59,03:55:15
+MH-100 - 4k_features,LightAutoML,86.63,89.94,88.25,86.98,00:59:38
+MH-100 - 4k_features,HyperGBM,87.53,86.52,87.02,85.63,00:08:24
+MH-100 - 4k_features,MLJar,84.45,92.86,88.45,87.26,01:04:27
