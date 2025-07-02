@@ -1,0 +1,7 @@
+Step Name,Elapsed Time (seconds),Memory Usage (MB)
+Data info,15.81,6.47
+Preprocessing,18.28,79.11
+Feature Eng,1.04,12.83
+Hyperparameter,55.50,-55.82
+Interpretability,11.71,31.82
+Evaluation,15.84,-2.98

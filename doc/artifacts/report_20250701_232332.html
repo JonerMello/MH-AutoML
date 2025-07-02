@@ -1,0 +1,199 @@
+
+            <html>
+            <head>
+                <title>AutoML Analysis Report</title>
+                <style>
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    h1, h2, h3 {
+                        color: #2c3e50;
+                        border-bottom: 2px solid #f0f0f0;
+                        padding-bottom: 10px;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                        margin: 20px 0;
+                    }
+                    th, td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                    }
+                    .metric-box {
+                        background-color: #f8f9fa;
+                        border: 1px solid #e9ecef;
+                        border-radius: 5px;
+                        padding: 15px;
+                        margin: 10px 0;
+                    }
+                    .image-container {
+                        text-align: center;
+                        margin: 20px 0;
+                    }
+                    .image-container img {
+                        max-width: 100%;
+                        height: auto;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                    }
+                    section {
+                        margin: 30px 0;
+                        padding: 20px;
+                        background-color: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    pre {
+                        background-color: #f8f9fa;
+                        border: 1px solid #e9ecef;
+                        border-radius: 5px;
+                        padding: 15px;
+                        overflow-x: auto;
+                        white-space: pre-wrap;
+                    }
+                    a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                    ul {
+                        list-style-type: none;
+                        padding: 0;
+                    }
+                    li {
+                        margin: 10px 0;
+                        padding: 10px;
+                        background-color: #f8f9fa;
+                        border-radius: 5px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>AutoML Analysis Report</h1>
+                <p><em>Generated on: 20250701_232332</em></p>
+            
+            <section>
+                <h2>Pipeline Configuration</h2>
+                <div class="metric-box">
+            <h4>Pipeline Steps</h4><p><b>Step 1:</b> Preprocessor - Pipeline</p><p><b>Step 2:</b> Feature engineering - Pipeline</p><p><b>Step 3:</b> Ensemble Classifier - VotingClassifier</p></div></section>
+            <section>
+                <h2>Data Analysis</h2>
+                <div class="metric-box">
+            <h4>Dataset Information</h4><p><b>Shape:</b> (15036, 51)</p><p><b>Columns:</b> 51</p><p><b>Memory Usage:</b> 5.85 MB</p><h4>Data Types</h4><table><tr><th>Column</th><th>Type</th><th>Non-Null Count</th></tr><tr><td>SEND_SMS</td><td>float64</td><td>14882</td></tr><tr><td>READ_PHONE_STATE</td><td>float64</td><td>14873</td></tr><tr><td>GET_ACCOUNTS</td><td>float64</td><td>14890</td></tr><tr><td>RECEIVE_SMS</td><td>float64</td><td>14884</td></tr><tr><td>READ_SMS</td><td>float64</td><td>14892</td></tr><tr><td>USE_CREDENTIALS</td><td>float64</td><td>14876</td></tr><tr><td>MANAGE_ACCOUNTS</td><td>float64</td><td>0</td></tr><tr><td>WRITE_SMS</td><td>float64</td><td>14888</td></tr><tr><td>READ_SYNC_SETTINGS</td><td>float64</td><td>0</td></tr><tr><td>AUTHENTICATE_ACCOUNTS</td><td>float64</td><td>14889</td></tr><tr><td>WRITE_HISTORY_BOOKMARKS</td><td>float64</td><td>14904</td></tr><tr><td>INSTALL_PACKAGES</td><td>float64</td><td>14865</td></tr><tr><td>CAMERA</td><td>float64</td><td>14874</td></tr><tr><td>WRITE_SYNC_SETTINGS</td><td>float64</td><td>14880</td></tr><tr><td>READ_HISTORY_BOOKMARKS</td><td>float64</td><td>14879</td></tr><tr><td>INTERNET</td><td>float64</td><td>14908</td></tr><tr><td>RECORD_AUDIO</td><td>float64</td><td>14900</td></tr><tr><td>NFC</td><td>float64</td><td>0</td></tr><tr><td>ACCESS_LOCATION_EXTRA_COMMANDS</td><td>float64</td><td>14904</td></tr><tr><td>WRITE_APN_SETTINGS</td><td>float64</td><td>14867</td></tr><tr><td>BIND_REMOTEVIEWS</td><td>float64</td><td>14881</td></tr><tr><td>READ_PROFILE</td><td>float64</td><td>14910</td></tr><tr><td>MODIFY_AUDIO_SETTINGS</td><td>float64</td><td>14891</td></tr><tr><td>READ_SYNC_STATS</td><td>float64</td><td>14893</td></tr><tr><td>BROADCAST_STICKY</td><td>float64</td><td>14904</td></tr><tr><td>WAKE_LOCK</td><td>float64</td><td>14895</td></tr><tr><td>RECEIVE_BOOT_COMPLETED</td><td>float64</td><td>14893</td></tr><tr><td>RESTART_PACKAGES</td><td>float64</td><td>14898</td></tr><tr><td>BLUETOOTH</td><td>float64</td><td>14894</td></tr><tr><td>READ_CALENDAR</td><td>float64</td><td>14894</td></tr><tr><td>READ_CALL_LOG</td><td>float64</td><td>14915</td></tr><tr><td>SUBSCRIBED_FEEDS_WRITE</td><td>float64</td><td>14883</td></tr><tr><td>READ_EXTERNAL_STORAGE</td><td>float64</td><td>14891</td></tr><tr><td>VIBRATE</td><td>float64</td><td>14890</td></tr><tr><td>ACCESS_NETWORK_STATE</td><td>float64</td><td>14886</td></tr><tr><td>SUBSCRIBED_FEEDS_READ</td><td>float64</td><td>14853</td></tr><tr><td>CHANGE_WIFI_MULTICAST_STATE</td><td>float64</td><td>14891</td></tr><tr><td>WRITE_CALENDAR</td><td>float64</td><td>14879</td></tr><tr><td>MASTER_CLEAR</td><td>float64</td><td>14884</td></tr><tr><td>UPDATE_DEVICE_STATS</td><td>float64</td><td>14905</td></tr><tr><td>WRITE_CALL_LOG</td><td>float64</td><td>14877</td></tr><tr><td>DELETE_PACKAGES</td><td>float64</td><td>0</td></tr><tr><td>GET_TASKS</td><td>float64</td><td>14896</td></tr><tr><td>GLOBAL_SEARCH</td><td>float64</td><td>14890</td></tr><tr><td>DELETE_CACHE_FILES</td><td>float64</td><td>14882</td></tr><tr><td>WRITE_USER_DICTIONARY</td><td>float64</td><td>14900</td></tr><tr><td>REORDER_TASKS</td><td>float64</td><td>14885</td></tr><tr><td>WRITE_PROFILE</td><td>float64</td><td>14893</td></tr><tr><td>SET_WALLPAPER</td><td>float64</td><td>14873</td></tr><tr><td>BIND_INPUT_METHOD</td><td>float64</td><td>14891</td></tr><tr><td>class</td><td>float64</td><td>14899</td></tr></table><h4>Missing Values</h4><table><tr><th>Column</th><th>Missing Count</th><th>Percentage</th></tr><tr><td>SEND_SMS</td><td>154</td><td>1.02%</td></tr><tr><td>READ_PHONE_STATE</td><td>163</td><td>1.08%</td></tr><tr><td>GET_ACCOUNTS</td><td>146</td><td>0.97%</td></tr><tr><td>RECEIVE_SMS</td><td>152</td><td>1.01%</td></tr><tr><td>READ_SMS</td><td>144</td><td>0.96%</td></tr><tr><td>USE_CREDENTIALS</td><td>160</td><td>1.06%</td></tr><tr><td>MANAGE_ACCOUNTS</td><td>15036</td><td>100.00%</td></tr><tr><td>WRITE_SMS</td><td>148</td><td>0.98%</td></tr><tr><td>READ_SYNC_SETTINGS</td><td>15036</td><td>100.00%</td></tr><tr><td>AUTHENTICATE_ACCOUNTS</td><td>147</td><td>0.98%</td></tr><tr><td>WRITE_HISTORY_BOOKMARKS</td><td>132</td><td>0.88%</td></tr><tr><td>INSTALL_PACKAGES</td><td>171</td><td>1.14%</td></tr><tr><td>CAMERA</td><td>162</td><td>1.08%</td></tr><tr><td>WRITE_SYNC_SETTINGS</td><td>156</td><td>1.04%</td></tr><tr><td>READ_HISTORY_BOOKMARKS</td><td>157</td><td>1.04%</td></tr><tr><td>INTERNET</td><td>128</td><td>0.85%</td></tr><tr><td>RECORD_AUDIO</td><td>136</td><td>0.90%</td></tr><tr><td>NFC</td><td>15036</td><td>100.00%</td></tr><tr><td>ACCESS_LOCATION_EXTRA_COMMANDS</td><td>132</td><td>0.88%</td></tr><tr><td>WRITE_APN_SETTINGS</td><td>169</td><td>1.12%</td></tr><tr><td>BIND_REMOTEVIEWS</td><td>155</td><td>1.03%</td></tr><tr><td>READ_PROFILE</td><td>126</td><td>0.84%</td></tr><tr><td>MODIFY_AUDIO_SETTINGS</td><td>145</td><td>0.96%</td></tr><tr><td>READ_SYNC_STATS</td><td>143</td><td>0.95%</td></tr><tr><td>BROADCAST_STICKY</td><td>132</td><td>0.88%</td></tr><tr><td>WAKE_LOCK</td><td>141</td><td>0.94%</td></tr><tr><td>RECEIVE_BOOT_COMPLETED</td><td>143</td><td>0.95%</td></tr><tr><td>RESTART_PACKAGES</td><td>138</td><td>0.92%</td></tr><tr><td>BLUETOOTH</td><td>142</td><td>0.94%</td></tr><tr><td>READ_CALENDAR</td><td>142</td><td>0.94%</td></tr><tr><td>READ_CALL_LOG</td><td>121</td><td>0.80%</td></tr><tr><td>SUBSCRIBED_FEEDS_WRITE</td><td>153</td><td>1.02%</td></tr><tr><td>READ_EXTERNAL_STORAGE</td><td>145</td><td>0.96%</td></tr><tr><td>VIBRATE</td><td>146</td><td>0.97%</td></tr><tr><td>ACCESS_NETWORK_STATE</td><td>150</td><td>1.00%</td></tr><tr><td>SUBSCRIBED_FEEDS_READ</td><td>183</td><td>1.22%</td></tr><tr><td>CHANGE_WIFI_MULTICAST_STATE</td><td>145</td><td>0.96%</td></tr><tr><td>WRITE_CALENDAR</td><td>157</td><td>1.04%</td></tr><tr><td>MASTER_CLEAR</td><td>152</td><td>1.01%</td></tr><tr><td>UPDATE_DEVICE_STATS</td><td>131</td><td>0.87%</td></tr><tr><td>WRITE_CALL_LOG</td><td>159</td><td>1.06%</td></tr><tr><td>DELETE_PACKAGES</td><td>15036</td><td>100.00%</td></tr><tr><td>GET_TASKS</td><td>140</td><td>0.93%</td></tr><tr><td>GLOBAL_SEARCH</td><td>146</td><td>0.97%</td></tr><tr><td>DELETE_CACHE_FILES</td><td>154</td><td>1.02%</td></tr><tr><td>WRITE_USER_DICTIONARY</td><td>136</td><td>0.90%</td></tr><tr><td>REORDER_TASKS</td><td>151</td><td>1.00%</td></tr><tr><td>WRITE_PROFILE</td><td>143</td><td>0.95%</td></tr><tr><td>SET_WALLPAPER</td><td>163</td><td>1.08%</td></tr><tr><td>BIND_INPUT_METHOD</td><td>145</td><td>0.96%</td></tr><tr><td>class</td><td>137</td><td>0.91%</td></tr></table><h4>Dataset Overview</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rows</th>
+      <th>Columns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>15036</td>
+      <td>51</td>
+    </tr>
+  </tbody>
+</table><h4>Data Type Distribution</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Data Type</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>float64</td>
+      <td>51</td>
+    </tr>
+  </tbody>
+</table><h4>Class Distribution</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Label</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.0</td>
+      <td>63.01%</td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>36.99%</td>
+    </tr>
+  </tbody>
+</table><h4>Data Quality</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Number of duplicate data</th>
+      <th>Number of null values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>51</td>
+    </tr>
+  </tbody>
+</table><h4>Features Information</h4><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Permissions found</th>
+      <th>API_Calls found</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>50</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table></div></section>
+            <section>
+                <h2>01_preprocessing</h2>
+                <div class="metric-box">
+                    <p>Data preprocessing artifacts and visualizations:</p>
+                </div>
+            <div class='image-container'><img src='clean_missing_values_heatmap.png' alt='Clean Missing Values Heatmap'><p>Clean Missing Values Heatmap</p></div><div class='image-container'><img src='missing_values_heatmap.png' alt='Missing Values Heatmap'><p>Missing Values Heatmap</p></div></section>
+            <section>
+                <h2>02_feature_engineering</h2>
+                <div class="metric-box">
+                    <p>Feature engineering results and visualizations:</p>
+                </div>
+            <h4>Feature Selection Method: LASSO</h4><p><b>Method used:</b> LASSO (L1 regularization)</p><h4>Selected Features</h4><p><em>No features were selected by this method.</em></p></table><div class='image-container'><img src='lasso_feature_importance.png' alt='LASSO Feature Importance'><p>LASSO Feature Importance</p></div><div class='image-container'><img src='train_test_distribution.png' alt='Train/Test Distribution'><p>Train/Test Distribution</p></div></section>
+            <section>
+                <h2>03_model_optimization</h2>
+                <div class="metric-box">
+                    <p>Hyperparameter tuning and model selection results:</p>
+                </div>
+            <h4>Best Model</h4><ul><li><b>ExtraTreesClassifier</b>: ExtraTreesClassifier - Params: {'bootstrap': False, 'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'entropy', 'max_depth': 6, 'max_features': None, 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 11, 'min_samples_split': 8, 'min_weight_fraction_leaf': 0.0, 'n_estimators': 98, 'n_jobs': None, 'oob_score': False, 'random_state': 42, 'verbose': 0, 'warm_start': False}</li></ul><p><a href='Hyperparameters_Results.csv' download>Download Hyperparameters Results (CSV)</a></p><p><a href='Models_Ranking.csv' download>Download Models Ranking (CSV)</a></p><p><a href='optuna_optimization_history.html' target='_blank'>View Optuna Optimization History (HTML)</a></p><div class='image-container'><img src='optuna_optimization_history.png' alt='Optuna Optimization History'><p>Optuna Optimization History</p></div><p><a href='optuna_parallel_coordinate.html' target='_blank'>View Optuna Parallel Coordinate (HTML)</a></p><p><a href='optuna_param_importance.html' target='_blank'>View Optuna Parameter Importance (HTML)</a></p><div class='image-container'><img src='optuna_param_importance.png' alt='Optuna Parameter Importance'><p>Optuna Parameter Importance</p></div><p><a href='optuna_slice_plot.html' target='_blank'>View Optuna Slice Plot (HTML)</a></p><p><a href='optuna_trials.csv' download>Download Optuna Trials (CSV)</a></p></section>
+            <section>
+                <h2>04_evaluation_metrics</h2>
+                <div class="metric-box">
+                    <p>Model evaluation metrics and performance results:</p>
+                </div>
+            <h4>Classification Report</h4><pre>{'Benign': {'precision': 0.8567961165048543, 'recall': 0.9751381215469613, 'f1-score': 0.9121447028423773, 'support': 2534}, 'Malware': {'precision': 0.9464285714285714, 'recall': 0.7293577981651376, 'f1-score': 0.8238341968911916, 'support': 1526}, 'accuracy': 0.8827586206896552, 'macro avg': {'precision': 0.9016123439667129, 'recall': 0.8522479598560495, 'f1-score': 0.8679894498667844, 'support': 4060}, 'weighted avg': {'precision': 0.890485556458941, 'recall': 0.8827586206896552, 'f1-score': 0.8789521333641731, 'support': 4060}}</pre><p><a href='best_model_20250701_232146.pkl' download>Download Best Model (PKL)</a></p></section>
+            <section>
+                <h2>05_interpretability</h2>
+                <div class="metric-box">
+                    <p>Model interpretability artifacts and explanations:</p>
+                </div>
+            <div class='image-container'><img src='shap_force_plot_ExtraTreesClassifier_20250701_232317.png' alt='SHAP Force Plot'><p>SHAP Force Plot</p></div><div class='image-container'><img src='lime_feature_importance_20250701_232317.png' alt='LIME Feature Importance'><p>LIME Feature Importance</p></div><p><a href='lime_interpretability_20250701_232317.html' target='_blank'>View LIME Interpretability (HTML)</a></p><div class='image-container'><img src='lime_interpretability_20250701_232317.png' alt='LIME Interpretability'><p>LIME Interpretability</p></div></section>
+            <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #7f8c8d;">
+                <p>AutoML Report generated by MH-AutoML System</p>
+                <p>20250701_232332</p>
+            </footer>
+            </body></html>

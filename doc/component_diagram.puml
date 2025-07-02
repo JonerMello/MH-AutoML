@@ -1,0 +1,205 @@
+@startuml MH-AutoML Component Diagram
+
+!theme plain
+skinparam componentStyle rectangle
+skinparam componentFontSize 10
+skinparam componentFontName Arial
+
+title MH-AutoML: Malware Hunter AutoML - Component Diagram
+
+package "MH-AutoML System" {
+    
+    ' ========================================
+    ' VIEW LAYER
+    ' ========================================
+    package "View Layer" {
+        component "CLI Interface" as CLI {
+            [Main Class]
+            [Argument Parser]
+            [Logo Display]
+        }
+    }
+    
+    ' ========================================
+    ' CONTROLLER LAYER
+    ' ========================================
+    package "Controller Layer" {
+        component "Core Controller" as Core {
+            [Pipeline Orchestrator]
+            [MLflow Manager]
+            [Performance Monitor]
+            [Results Coordinator]
+        }
+    }
+    
+    ' ========================================
+    ' MODEL LAYER
+    ' ========================================
+    package "Model Layer" {
+        
+        package "Preprocessing Components" {
+            component "Data Analysis" as DataAnalysis {
+                [DataInfo]
+                [System Information]
+                [Data Statistics]
+                [Feature Analysis]
+            }
+            
+            component "Data Cleaning" as DataCleaning {
+                [Duplicate Removal]
+                [Missing Value Handler]
+                [Outlier Detection]
+                [Data Validation]
+            }
+            
+            component "Data Transformation" as DataTransformation {
+                [Label Encoder]
+                [One-Hot Encoder]
+                [Data Normalizer]
+                [Type Converter]
+            }
+        }
+        
+        package "Feature Engineering Components" {
+            component "Feature Selection" as FeatureSelection {
+                [LASSO Selector]
+                [PCA Reducer]
+                [ANOVA Selector]
+                [Feature Importance]
+            }
+            
+            component "Class Balancing" as ClassBalancing {
+                [SMOTE Balancer]
+                [Random Under Sampler]
+                [Balance Analyzer]
+            }
+        }
+        
+        package "Model Optimization Components" {
+            component "Hyperparameter Optimization" as HyperOpt {
+                [Optuna Optimizer]
+                [Grid Search]
+                [Cross Validator]
+                [Model Selector]
+            }
+            
+            component "Algorithm Library" as AlgoLib {
+                [LightGBM]
+                [CatBoost]
+                [Random Forest]
+                [Decision Tree]
+                [Extra Trees]
+                [KNN]
+            }
+        }
+        
+        package "Interpretability Components" {
+            component "Model Explanation" as ModelExplanation {
+                [SHAP Explainer]
+                [LIME Explainer]
+                [Feature Importance Plotter]
+                [Partial Dependence]
+            }
+        }
+        
+        package "Utility Components" {
+            component "Data Validation" as DataValidation {
+                [File Validator]
+                [Column Validator]
+                [Format Checker]
+            }
+            
+            component "Report Generation" as ReportGen {
+                [HTML Report Generator]
+                [Performance Plotter]
+                [Metrics Calculator]
+                [Artifact Saver]
+            }
+        }
+    }
+    
+    ' ========================================
+    ' EXTERNAL SYSTEMS
+    ' ========================================
+    package "External Systems" {
+        component "MLflow" as MLflow {
+            [Experiment Tracker]
+            [Model Registry]
+            [Artifact Store]
+            [Web UI]
+        }
+        
+        component "File System" as FileSystem {
+            [Dataset Storage]
+            [Results Storage]
+            [Model Storage]
+        }
+        
+        component "Web Browser" as Browser {
+            [MLflow UI]
+            [Report Viewer]
+        }
+    }
+}
+
+' ========================================
+' RELATIONSHIPS
+' ========================================
+
+' View -> Controller
+CLI --> Core : uses
+
+' Controller -> Model Components
+Core --> DataAnalysis : orchestrates
+Core --> DataCleaning : orchestrates
+Core --> DataTransformation : orchestrates
+Core --> FeatureSelection : orchestrates
+Core --> ClassBalancing : orchestrates
+Core --> HyperOpt : orchestrates
+Core --> AlgoLib : uses
+Core --> ModelExplanation : orchestrates
+Core --> DataValidation : uses
+Core --> ReportGen : uses
+
+' Internal Model Relationships
+DataAnalysis --> DataCleaning : provides analysis
+DataCleaning --> DataTransformation : provides cleaned data
+DataTransformation --> FeatureSelection : provides transformed data
+FeatureSelection --> ClassBalancing : may use
+ClassBalancing --> HyperOpt : provides balanced data
+HyperOpt --> AlgoLib : uses algorithms
+AlgoLib --> ModelExplanation : provides trained model
+
+' External System Relationships
+Core --> MLflow : logs experiments
+Core --> FileSystem : reads/writes files
+Core --> Browser : opens UI
+
+' Data Flow
+DataValidation --> DataAnalysis : validates input
+ModelExplanation --> ReportGen : provides explanations
+HyperOpt --> ReportGen : provides results
+
+' ========================================
+' INTERFACES
+' ========================================
+interface "Dataset Input" as DatasetInterface
+interface "Model Output" as ModelInterface
+interface "Report Output" as ReportInterface
+interface "MLflow Interface" as MLflowInterface
+
+CLI --> DatasetInterface
+Core --> DatasetInterface
+DataValidation --> DatasetInterface
+
+AlgoLib --> ModelInterface
+ModelExplanation --> ModelInterface
+Core --> ModelInterface
+
+ReportGen --> ReportInterface
+Core --> ReportInterface
+
+Core --> MLflowInterface
+MLflow --> MLflowInterface
+
+@enduml 
