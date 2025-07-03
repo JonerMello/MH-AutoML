@@ -100,12 +100,21 @@ class DataTransformation(BaseEstimator, TransformerMixin):
             # Remove as colunas em que todos os valores são maiores que 1
             X_numeric_bool = X_numeric_bool.loc[:, (X_numeric_bool <= 1).all()]
             # Apply OneHotEncoder to numeric and boolean columns
-            onehot_encoder = OneHotEncoder(
-                categories='auto',
-                drop='first',
-                sparse=False,
-                handle_unknown='ignore'
-            )
+            import sklearn
+            if tuple(map(int, sklearn.__version__.split('.')[:2])) >= (1, 2):
+                onehot_encoder = OneHotEncoder(
+                    categories='auto',
+                    drop='first',
+                    sparse_output=False,
+                    handle_unknown='ignore'
+                )
+            else:
+                onehot_encoder = OneHotEncoder(
+                    categories='auto',
+                    drop='first',
+                    sparse=False,
+                    handle_unknown='ignore'
+                )
             X_encoded = onehot_encoder.fit_transform(X_numeric_bool)
 
             # Get column names after encoding

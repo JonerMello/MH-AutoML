@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>$guid1$</ProjectGuid>
+    <ProjectGuid>9d89aa39-99a5-47b9-9369-05efb6ab3acf</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
     <StartupFile>view\main.py</StartupFile>
@@ -61,6 +61,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="model\tools\dataset_validation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="model\tools\mlflow_manager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="model\tools\report_generator.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="model\tools\__init__.py">

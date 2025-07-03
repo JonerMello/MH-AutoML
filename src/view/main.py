@@ -1,7 +1,7 @@
 import argparse
 import logging
 from controller.core import Core
-from logo import *
+from view.logo import *
 
 class Main:
     """
@@ -24,7 +24,7 @@ class Main:
     """
 
     def __init__(self, dataset_url, label, log_level=logging.INFO, remove_duplicates=True,
-                 remove_missing_values=True, remove_outliers=True, one_hot_encoder=True, do_label_encode=True,balance_classes=True):
+                 remove_missing_values=True, remove_outliers=True, one_hot_encoder=True, do_label_encode=True,balance_classes=None, feature_selection='LASSO'):
         self.dataset_url = dataset_url
         self.label = label
         self.log_level = log_level
@@ -34,6 +34,7 @@ class Main:
         self.one_hot_encoder = one_hot_encoder
         self.do_label_encode = do_label_encode
         self.balance_classes = balance_classes
+        self.feature_selection = feature_selection
 
     def run_core(self):
         """
@@ -43,6 +44,12 @@ class Main:
                     remove_duplicates=self.remove_duplicates, remove_missing_values=self.remove_missing_values,
                     remove_outliers=self.remove_outliers, one_hot_encoder=self.one_hot_encoder,
                     do_label_encode=self.do_label_encode,balance_classes=self.balance_classes)
+        if self.feature_selection == 'PCA':
+            core.enable_pca()
+        elif self.feature_selection == 'LASSO':
+            core.enable_lasso()
+        elif self.feature_selection == 'ANOVA':
+            core.enable_anova()
         core.run()
 
 if __name__ == "__main__":
@@ -55,8 +62,12 @@ if __name__ == "__main__":
     parser.add_argument('--remove-outliers', action='store_false', default=True, help='Remove outliers.')
     parser.add_argument('--one-hot-encoder', action='store_false', default=True, help='Apply one-hot encoding.')
     parser.add_argument('--label-encode', action='store_false', default=True, help='Apply label encoding.')
-    parser.add_argument('--balance-classes', action='store_false', default=True, help='Apply balance classes.')
-
+    parser.add_argument('--balance-classes', type=str, default=None,
+                        choices=['SMOTE', 'RUS'], 
+                        help='Method to balance classes. Choices: SMOTE (oversampling), RUS (undersampling). Default: None (no balancing).')
+    parser.add_argument('--feature-selection', '-f', type=str, default='LASSO',
+                        choices=['PCA', 'LASSO', 'ANOVA'], 
+                        help='Feature selection method to use. Choices: PCA, LASSO, ANOVA. Default: LASSO.')
    
 
     print(logo)
@@ -65,7 +76,7 @@ if __name__ == "__main__":
     main = Main(args.dataset, args.label_column, log_level=args.log_level,
                 remove_duplicates=args.remove_duplicates, remove_missing_values=args.remove_missing_values,
                 remove_outliers=args.remove_outliers, one_hot_encoder=args.one_hot_encoder,
-                do_label_encode=args.label_encode,balance_classes=args.balance_classes)
+                do_label_encode=args.label_encode,balance_classes=args.balance_classes,feature_selection=args.feature_selection)
     main.run_core()
 
 

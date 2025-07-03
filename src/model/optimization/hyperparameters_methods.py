@@ -1,5 +1,3 @@
-import warnings
-warnings.filterwarnings("ignore")
 import optuna
 import os
 import shap
@@ -16,12 +14,12 @@ from sklearn.pipeline import Pipeline
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, roc_auc_score, make_scorer,matthews_corrcoef
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, roc_auc_score, make_scorer, matthews_corrcoef
 
 
 class Hyperparameters:
-    
     """Hyperparameters: This class is used to tune the hyperparameters of a machine learning model using the Optuna library. It has a method called "get_models_params" that creates a voting classifier and the "call" method that performs cross-validation on the data to obtain a score, which is then returned."""
+    
     def __init__(self, X, y):
         """
         Constructs all the necessary attributes for the Hyperparameters object.
@@ -38,7 +36,7 @@ class Hyperparameters:
     def get_models_params(self, trial):
         """get_models_params: Function used to select and instantiate a machine learning classifier from a list of classifier options, including "RandomForestClassifier," "DecisionTreeClassifier," "ExtraTreesClassifier," and "SVC." The classifier selection is done using the "trial.suggest" function from the Optuna library. Finally, the code instantiates a "VotingClassifier" using the selected classifier and returns the VotingClassifier instance."""
 
-        classifier_name = trial.suggest_categorical("classifier", ["RandomForestClassifier", "DecisionTreeClassifier", "ExtraTreesClassifier", "CatBoost"])
+        classifier_name = trial.suggest_categorical("classifier", [ "CatBoost", "LightGBM", "RandomForestClassifier", "DecisionTreeClassifier", "ExtraTreesClassifier"])
 
         criterion = trial.suggest_categorical("criterion", ["gini", "entropy"])
         n_estimators = trial.suggest_int("n_estimators", 50, 150)
@@ -106,9 +104,7 @@ class Hyperparameters:
                 n_neighbors=n_neighbors,
                 p=p,
                 weights=weights
-                
-                                        
-           ),
+            ),
             "LightGBM": LGBMClassifier(
                 learning_rate=learning_rate,
                 n_estimators=n_estimators,
@@ -116,7 +112,7 @@ class Hyperparameters:
                 num_leaves=num_leaves,
                 boosting_type=boosting_type,
                 random_state=42,
-                verbosity = -1
+                verbose=-1
             ),
             "CatBoost": CatBoostClassifier(
                 iterations=n_estimators,
@@ -127,7 +123,7 @@ class Hyperparameters:
                 border_count=border_count,
                 random_seed=42,
                 logging_level='Silent'
-        )
+            )
         }
 
         final_model = VotingClassifier(estimators=[(classifier_name, classifiers[classifier_name])], voting="soft")
@@ -137,10 +133,9 @@ class Hyperparameters:
         """The "call" method performs cross-validation using "cross_val_score" on the data to obtain a score, which is then returned."""
         final_model = self.get_models_params(trial)
         recall_scorer = make_scorer(recall_score)
-        score = cross_val_score(final_model, self.X, self.y, n_jobs=-1, cv=5, scoring='accuracy').mean()
+        score = cross_val_score(final_model, self.X, self.y, n_jobs=-1, cv=5, scoring='recall').mean()
         trial.set_user_attr("final_model", final_model)
         return score
-
 
     def calculate_metrics_and_save_results(self, study, X_train_selected, X_test_selected, y_train, y_test):
         metrics = []
@@ -154,7 +149,6 @@ class Hyperparameters:
                 recall = recall_score(y_test, y_pred)
                 f1 = f1_score(y_test, y_pred)
                 mcc = matthews_corrcoef(y_test, y_pred)
-
 
                 metrics.append({
                     "accuracy": accuracy,
@@ -171,6 +165,7 @@ class Hyperparameters:
             df_results.loc[idx, "recall"] = metric["recall"]
             df_results.loc[idx, "f1"] = metric["f1"]
             df_results.loc[idx, "mcc"] = metric["mcc"]
+        
         select_results = df_results[[
             "params_classifier",
             "params_criterion",
@@ -194,7 +189,7 @@ class Hyperparameters:
         df_results.to_csv(os.path.join(results_folder, "Hyperparameters_Results.csv"), index=False)
         ranking = select_results.sort_values("value", ascending=False).drop_duplicates(["params_classifier"]).head(5)
         ranking.to_csv(os.path.join(results_folder, "Models_Ranking.csv"), index=False)
-        #self.logger.info(f"See the Models Ranking and Hyperparameters Results at: {results_folder}")
+        
         formatted_ranking = "\n".join(
             f"Classifier: {row['params_classifier']}, Value: {row['value']:.4f}"
             for index, row in ranking.iterrows()

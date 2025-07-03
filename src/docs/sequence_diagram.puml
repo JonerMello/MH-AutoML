@@ -1,0 +1,171 @@
+@startuml MH-AutoML Sequence Diagram
+
+!theme plain
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+
+title MH-AutoML: Malware Hunter AutoML - Sequence Diagram
+
+actor User
+participant "Main (View)" as Main
+participant "Core (Controller)" as Core
+participant "DatasetValidation" as Validation
+participant "DataInfo" as DataInfo
+participant "DataCleaning" as Cleaning
+participant "DataTransformation" as Transformation
+participant "FeatureSelection" as FeatureSelection
+participant "Hyperparameters" as Hyperparameters
+participant "Interpretability" as Interpretability
+participant "ReportGenerator" as ReportGenerator
+participant "MLflow" as MLflow
+
+User -> Main: python main.py -d dataset.csv -l class
+activate Main
+
+Main -> Main: parse_arguments()
+Main -> Main: create Main instance
+Main -> Core: Core(dataset_url, label, ...)
+activate Core
+
+Core -> Validation: validate_dataset()
+activate Validation
+Validation -> Validation: check_file_exists()
+Validation -> Validation: check_label_column()
+Validation --> Core: True/False
+deactivate Validation
+
+alt Dataset is valid
+    Core -> Core: load_data()
+    Core -> DataInfo: DataInfo(label, dataset)
+    activate DataInfo
+    
+    DataInfo -> DataInfo: display_dataframe_info()
+    DataInfo -> DataInfo: system_info()
+    DataInfo -> DataInfo: display_info_table()
+    DataInfo -> DataInfo: display_data_types()
+    DataInfo -> DataInfo: display_balance_info()
+    DataInfo -> DataInfo: display_duplicates_missing()
+    DataInfo -> DataInfo: display_features_info()
+    DataInfo --> Core: data_info_object
+    deactivate DataInfo
+    
+    Core -> Cleaning: DataCleaning(remove_duplicates, remove_missing_values, remove_outliers, label)
+    activate Cleaning
+    
+    Cleaning -> Cleaning: fit(dataset)
+    Cleaning -> Cleaning: transform(dataset)
+    Cleaning -> Cleaning: remove_duplicates_step()
+    Cleaning -> Cleaning: remove_missing_values_step()
+    Cleaning -> Cleaning: remove_outliers_step()
+    Cleaning -> Cleaning: plot_missing_values_heatmap()
+    Cleaning --> Core: cleaned_dataset
+    deactivate Cleaning
+    
+    Core -> Transformation: DataTransformation(label, one_hot_encoder, do_label_encode)
+    activate Transformation
+    
+    Transformation -> Transformation: fit(dataset)
+    Transformation -> Transformation: transform(dataset)
+    alt one_hot_encoder == True
+        Transformation -> Transformation: one_hot_encode(X)
+    end
+    alt do_label_encode == True
+        Transformation -> Transformation: label_encode(y)
+    end
+    Transformation --> Core: (X, y)
+    deactivate Transformation
+    
+    Core -> FeatureSelection: FeatureSelection(pca, anova, lasso, ...)
+    activate FeatureSelection
+    
+    FeatureSelection -> FeatureSelection: fit(X, y)
+    alt balance_classes == "SMOTE"
+        FeatureSelection -> FeatureSelection: balance_data_SMOTE(X, y)
+    else balance_classes == "RUS"
+        FeatureSelection -> FeatureSelection: balance_data(X, y)
+    end
+    
+    alt feature_selection == "LASSO"
+        FeatureSelection -> FeatureSelection: lasso_feature_selection()
+        FeatureSelection -> FeatureSelection: plot_lasso_features()
+    else feature_selection == "PCA"
+        FeatureSelection -> FeatureSelection: pca_reduction()
+        FeatureSelection -> FeatureSelection: plot_pca_biplot()
+    else feature_selection == "ANOVA"
+        FeatureSelection -> FeatureSelection: anova_selection()
+        FeatureSelection -> FeatureSelection: plot_anova_features()
+    end
+    
+    FeatureSelection --> Core: (X_selected, y_selected, feature_info)
+    deactivate FeatureSelection
+    
+    Core -> Hyperparameters: Hyperparameters(X_selected, y_selected)
+    activate Hyperparameters
+    
+    Hyperparameters -> Hyperparameters: optimize_hyperparameters()
+    Hyperparameters -> Hyperparameters: get_models_params(trial)
+    Hyperparameters -> Hyperparameters: create_voting_classifier()
+    Hyperparameters -> Hyperparameters: cross_validation()
+    Hyperparameters -> Hyperparameters: calculate_metrics()
+    Hyperparameters -> Hyperparameters: save_results()
+    Hyperparameters --> Core: (best_model, best_params, metrics)
+    deactivate Hyperparameters
+    
+    Core -> MLflow: setup_mlflow()
+    activate MLflow
+    MLflow -> MLflow: create_experiment()
+    MLflow -> MLflow: log_parameters()
+    MLflow -> MLflow: log_metrics()
+    MLflow -> MLflow: save_model()
+    MLflow --> Core: experiment_id
+    deactivate MLflow
+    
+    Core -> Interpretability: Interpretability(best_model, X_train, X_test, y_train, feature_info, results_folder)
+    activate Interpretability
+    
+    Interpretability -> Interpretability: explain_model()
+    alt applied_method == "pca"
+        Interpretability -> Interpretability: _explain_pca_model()
+        Interpretability -> Interpretability: _explain_pca_components()
+    else applied_method in ["anova", "lasso"]
+        Interpretability -> Interpretability: _explain_feature_selected_model()
+        Interpretability -> Interpretability: _plot_feature_selection_importance()
+    else
+        Interpretability -> Interpretability: _explain_original_features()
+    end
+    
+    Interpretability -> Interpretability: _generate_shap_explanation()
+    Interpretability -> Interpretability: _generate_lime_explanation()
+    Interpretability --> Core: (shap_file, lime_html, lime_plot)
+    deactivate Interpretability
+    
+    Core -> ReportGenerator: ReportGenerator(results_folder)
+    activate ReportGenerator
+    
+    ReportGenerator -> ReportGenerator: generate_report()
+    ReportGenerator -> ReportGenerator: generate_performance_plots()
+    ReportGenerator -> ReportGenerator: generate_confusion_matrix()
+    ReportGenerator -> ReportGenerator: generate_roc_curve()
+    ReportGenerator -> ReportGenerator: generate_precision_recall_curve()
+    ReportGenerator --> Core: report_file
+    deactivate ReportGenerator
+    
+    Core -> Core: print_optimized_pipeline()
+    Core -> Core: start_mlflow_ui()
+    Core -> Core: open_browser()
+    
+    Core --> Main: execution_complete
+    deactivate Core
+    
+    Main --> User: Results saved in results/ folder
+    Main --> User: MLflow UI available at http://localhost:5000
+    
+else Dataset is invalid
+    Validation --> Core: False
+    Core --> Main: validation_error
+    Main --> User: Error: Invalid dataset
+end
+
+deactivate Main
+
+@enduml 

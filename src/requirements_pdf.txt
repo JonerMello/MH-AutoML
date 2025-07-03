@@ -1,0 +1,22 @@
+# Dependências para geração de relatórios PDF
+# Instale com: pip install -r requirements_pdf.txt
+# Ou, para instalar junto com o pacote: pip install .[pdf]
+
+# --- INSTRUÇÕES MULTIPLATAFORMA ---
+# Windows: Apenas pip install, ReportLab funciona nativamente.
+# Linux: Além do pip, instale dependências do sistema para WeasyPrint:
+# sudo apt-get install build-essential python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
+
+# Método 1: WeasyPrint (recomendado)
+weasyprint==60.2
+
+# Método 2: pdfkit + wkhtmltopdf
+pdfkit==1.2.1
+
+# Método 3: Conversão HTML para imagem
+playwright==1.44.0
+selenium==4.18.1
+
+# Dependências opcionais para melhor qualidade
+Pillow==10.3.0
+reportlab==4.1.0 

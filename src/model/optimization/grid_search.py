@@ -78,15 +78,10 @@ class GridSearch:
         best_model = None
         
         for model in models:
-            print("model__",model)
             clf = GridSearchCV(model['model'], model['params'], cv=5)
             clf.fit(self.X, self.y)
-            print("OKOKOKOK",clf)
             if clf.best_score_ > best_score:
                 best_score = clf.best_score_
                 best_model = model['name']
-                print("best_score",best_score)
-                print("best_model",best_model)
         
-        print(f'Best score: {best_score:.4f} using {best_model}')
         return best_model,best_score

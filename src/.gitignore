@@ -1,0 +1,66 @@
+# Python bytecode e caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Ambientes virtuais
+.venv/
+venv/
+ENV/
+
+# Arquivos de build/distribuição
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Resultados temporários e artefatos
+results/
+catboost_info/
+*.log
+*.tmp
+*.out
+*.tfevents*
+
+# Dados grandes e arquivos de exemplo
+*.csv
+*.tsv
+*.xlsx
+*.h5
+*.pkl
+*.joblib
+*.sav
+*.npz
+*.npy
+
+# Arquivos de configuração de IDE
+.vscode/
+.idea/
+*.sln
+*.pyproj
+*.user
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de relatórios gerados
+*.pdf
+*.html
+*.jpg
+*.png
+
+# Notebooks temporários
+.ipynb_checkpoints/
+
+# Arquivos de testes gerados
+/test/test_results/
+/test/test_preprocessing_results/
+/test/test_shap_feature_names_results/
+/test/test_shap_force_plot_*/
+
+# Permitir exemplos pequenos
+!Datasets/README*
+!data/README* 

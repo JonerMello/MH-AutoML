@@ -1,0 +1,206 @@
+\section{Desafios Técnicos Encontrados}
+\label{sec:desafios}
+
+Durante o desenvolvimento e validação do \toolname{}, enfrentamos diversos desafios técnicos e conceituais que exigiram soluções inovadoras para garantir um pipeline robusto, explicável e reprodutível. As dificuldades incluíram incompatibilidades entre bibliotecas, limitações de interpretabilidade em modelos complexos, problemas de desempenho com grandes volumes de dados, desafios na rastreabilidade de experimentos, e questões específicas com a API do SHAP. Esta seção descreve os principais obstáculos e as soluções adotadas.
+
+\subsection*{Incompatibilidades e Modelos Não Suportados}
+
+Alguns algoritmos e estruturas de modelagem apresentaram limitações para métodos de explicabilidade como SHAP e LIME. Um exemplo relevante foi a utilização do \texttt{VotingClassifier} com votação do tipo \texttt{hard}, cuja natureza não-diferenciável impede a computação direta dos valores de Shapley. A solução adotada consistiu em substituí-lo por \texttt{voting='soft'} sempre que possível, ou ainda realizar a explicação individual de cada modelo base.
+
+No caso de modelos baseados em transformação linear, como o PCA, observou-se que os componentes gerados não preservam a relação feature-valor esperada por SHAP. A solução envolveu o uso de PCA probabilístico e a aplicação da seguinte equação para estimar a contribuição de cada componente, considerando a distribuição condicional:
+
+\begin{equation}
+    v_2(S) = \frac{1}{d}\mathbb{E}_{p(\bm{x}_{S^c}|\bm{x}_{S})}[e(\bm{x})]
+\end{equation}
+
+\subsection*{Desafios Específicos com SHAP Force Plot}
+
+Um dos desafios mais significativos foi a incompatibilidade entre diferentes versões da API do SHAP e a exibição incorreta de nomes de features nos gráficos force plot. Na versão 0.20 do SHAP, a API foi modificada significativamente, exigindo a passagem do valor base como primeiro parâmetro:
+
+\begin{verbatim}
+# API SHAP v0.20 (correto)
+shap.plots.force(expected_value, shap_values, feature_names=feature_names)
+
+# API anterior (incorreta na v0.20)
+shap.plots.force(shap_values, feature_names=feature_names)
+\end{verbatim}
+
+Além disso, diferentes modelos retornam formatos distintos de \texttt{shap\_values}:
+\begin{itemize}
+    \item \textbf{Modelos scikit-learn}: Arrays numpy 3D com shape $(1, n\_features, n\_classes)$
+    \item \textbf{LightGBM e CatBoost}: Listas de arrays para cada classe
+    \item \textbf{Modelos binários}: Necessidade de seleção da classe correta (índice 1 para classe positiva)
+\end{itemize}
+
+A solução implementada envolveu a criação de lógica robusta para detectar automaticamente o formato dos dados e aplicar a seleção apropriada:
+
+\begin{verbatim}
+if isinstance(shap_values_single, list):
+    # Lista de arrays (LightGBM, CatBoost)
+    shap_values_to_use = shap_values_single[1] if len(shap_values_single) > 1 else shap_values_single[0]
+else:
+    if shap_values_single.ndim == 3:
+        # Array 3D (scikit-learn)
+        shap_values_to_use = shap_values_single[..., 1]
+    else:
+        # Array simples
+        shap_values_to_use = shap_values_single
+\end{verbatim}
+
+\subsection*{Problemas de Feature Names em Gráficos Interativos}
+
+Inicialmente, os gráficos SHAP force plot exibiam nomes genéricos como "Feature 0", "Feature 1", etc., em vez dos nomes reais das variáveis. Este problema foi particularmente desafiador porque:
+
+\begin{enumerate}
+    \item A API do SHAP v0.20 mudou a forma de passar feature names
+    \item Diferentes modelos requerem diferentes abordagens para feature names
+    \item O objeto \texttt{Explanation} do SHAP precisa ser configurado corretamente
+\end{enumerate}
+
+A solução envolveu a implementação de múltiplas estratégias:
+\begin{itemize}
+    \item Uso do parâmetro \texttt{feature\_names} diretamente na função \texttt{shap.plots.force()}
+    \item Criação de objetos \texttt{Explanation} com feature names explícitos
+    \item Fallbacks para casos onde a API principal falha
+\end{itemize}
+
+\subsection*{Gerenciamento de Dependências}
+
+A utilização de múltiplas bibliotecas modernas gerou conflitos de versões, principalmente ao trabalhar com Python 3.5–3.9. Isso exigiu a padronização do ambiente com Python 3.8.10 e a criação de um \texttt{requirements.txt} cuidadosamente definido. A Tabela~\ref{tab:erros} apresenta um resumo dos principais problemas técnicos e as soluções aplicadas.
+
+\begin{table}[ht]
+\centering
+\caption{Resumo dos principais desafios enfrentados e soluções aplicadas no desenvolvimento do \toolname{}.}
+\label{tab:erros}
+\begin{tabular}{|p{4.3cm}|p{4.6cm}|p{5.1cm}|}
+\hline
+\textbf{Problema} & \textbf{Mensagem ou Comportamento} & \textbf{Solução Adotada} \\
+\hline
+
+\textbf{Incompatibilidade do \texttt{VotingClassifier} com SHAP} & 
+\texttt{AttributeError: 'VotingClassifier' object has no attribute 'predict\_proba'} (\texttt{voting='hard'}) &
+Substituição por \texttt{voting='soft'} ou explicação dos modelos base individualmente. \\
+
+\hline
+
+\textbf{API SHAP v0.20 incompatível} & 
+\texttt{In v0.20, force plot now requires the base value as the first parameter!} &
+Atualização da API para usar \texttt{shap.plots.force(expected\_value, shap\_values, feature\_names)} \\
+
+\hline
+
+\textbf{Feature names não exibidos em gráficos SHAP} & 
+Gráficos mostrando "Feature 0", "Feature 1" em vez de nomes reais &
+Implementação de lógica robusta para detectar formato de dados e passar feature names corretamente \\
+
+\hline
+
+\textbf{Formatos diferentes de shap\_values entre modelos} & 
+Arrays 3D (scikit-learn) vs. listas de arrays (LightGBM/CatBoost) &
+Detecção automática do formato e seleção apropriada da classe correta \\
+
+\hline
+
+\textbf{Versões incompatíveis de bibliotecas com Python 3.5–3.9} & 
+Erros de instalação e conflitos entre versões (ex.: \texttt{shap}, \texttt{optuna}, \texttt{lightgbm}) & 
+Padronização para Python 3.8.10 e definição de um \texttt{requirements.txt} compatível. \\
+
+\hline
+
+\textbf{Eliminação excessiva de features com Lasso} & 
+Redução drástica de variáveis, resultando em baixo desempenho explicativo (gráficos SHAP/LIME vazios) &
+Aplicação combinada com ANOVA e PCA, análise visual das features eliminadas. \\
+
+\hline
+
+\textbf{Dificuldade de explicação de ensembles complexos (e.g., \texttt{CatBoost}, \texttt{StackingClassifier})} &
+Incompatibilidade com SHAP e LIME devido à estrutura interna dos modelos &
+Criação de versões simplificadas dos modelos apenas para fins de explicação local. \\
+
+\hline
+
+\textbf{Execução ineficiente com datasets grandes} & 
+Estouro de memória e longos tempos de execução na etapa de validação cruzada &
+Uso de \texttt{numpy} em vez de \texttt{pandas}, paralelização com \texttt{joblib}/\texttt{dask}, e redução de dimensionalidade via PCA. \\
+
+\hline
+
+\textbf{Falhas silenciosas na geração de gráficos explicativos} &
+Ausência de arquivos SHAP ou LIME sem erro reportado, quando o modelo não tinha dados suficientes &
+Validação prévia da existência de dados explicáveis e adição de logs de alerta. \\
+
+\hline
+
+\textbf{Modelos empilhados dificultando a explicação local} &
+SHAP/LIME exigem entrada vetorizada direta, incompatível com \texttt{Pipeline} com múltiplas transformações &
+Extração manual dos dados transformados e explicação aplicada diretamente sobre os modelos base. \\
+
+\hline
+
+\textbf{Reexecução de experimentos sem reaproveitamento de cache} &
+Sobrescrita de resultados e tempo de execução duplicado em testes repetidos &
+Implementação de controle de cache por \texttt{SHA256} e salvamento incremental dos resultados por experimento. \\
+
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{Desempenho Computacional e Interpretabilidade}
+
+O cálculo exato dos valores de Shapley apresenta complexidade exponencial com o número de atributos. Para mitigar esse problema, adotamos aproximações por Monte Carlo, conforme ilustrado a seguir:
+
+\begin{equation}
+    \varphi_i(v) \approx \frac{1}{Q}\sum_{q=1}^Q \big(v(\text{Pre}_i(O_q)\cup\{i\}) - v(\text{Pre}_i(O_q))\big)
+\end{equation}
+
+Além disso, foram implementadas estratégias de otimização de memória, como uso de \texttt{joblib} para caching e \texttt{dask} para particionamento de dados. Na questão da rastreabilidade, o uso direto de \texttt{mlflow.autolog()} gerava nomes genéricos e artefatos pouco informativos. Foi necessário desativá-lo e implementar uma abordagem modular com convenções de nomenclatura e tags hierárquicas para facilitar a análise posterior.
+
+\subsection*{Compatibilidade entre Modelos de Machine Learning}
+
+Um dos desafios mais significativos foi garantir que todos os modelos suportados pelo \toolname{} funcionassem corretamente com os métodos de interpretabilidade SHAP e LIME. Foram realizados testes extensivos com os cinco algoritmos principais do sistema:
+
+\begin{itemize}
+    \item \textbf{RandomForestClassifier}: Apresentou desafios específicos com arrays numpy 3D de shape $(1, n\_features, n\_classes)$, exigindo seleção da classe correta via \texttt{shap\_values[..., 1]} para classificação binária.
+    
+    \item \textbf{DecisionTreeClassifier}: Similar ao RandomForest, mas com estrutura mais simples. Requer tratamento especial para garantir que os feature names sejam preservados corretamente nos gráficos SHAP.
+    
+    \item \textbf{ExtraTreesClassifier}: Compatível com TreeExplainer do SHAP, mas com as mesmas limitações de formato de dados dos modelos baseados em árvores do scikit-learn.
+    
+    \item \textbf{LGBMClassifier}: Retorna lista de arrays para cada classe, diferente dos modelos scikit-learn. Requer seleção explícita da classe via \texttt{shap\_values[1]} para a classe positiva.
+    
+    \item \textbf{CatBoostClassifier}: Similar ao LightGBM em estrutura, mas com implementação própria. Também retorna lista de arrays e necessita tratamento específico para feature names.
+\end{itemize}
+
+A solução implementada envolveu a criação de um sistema de detecção automática do tipo de modelo e aplicação da estratégia apropriada para cada caso. O código desenvolvido detecta automaticamente se os \texttt{shap\_values} são uma lista (LightGBM/CatBoost) ou um array numpy (scikit-learn) e aplica a lógica correta:
+
+\begin{verbatim}
+# Detecção automática do formato de dados
+if isinstance(shap_values_single, list):
+    # LightGBM e CatBoost: lista de arrays
+    shap_values_to_use = shap_values_single[1] if len(shap_values_single) > 1 else shap_values_single[0]
+else:
+    if shap_values_single.ndim == 3:
+        # scikit-learn: array 3D (1, n_features, n_classes)
+        shap_values_to_use = shap_values_single[..., 1]
+    else:
+        # Caso simples
+        shap_values_to_use = shap_values_single
+\end{verbatim}
+
+Este sistema garante que todos os modelos sejam explicáveis de forma consistente, independentemente de suas estruturas internas, e que os feature names sejam exibidos corretamente nos gráficos SHAP force plot.
+
+\subsection*{Lições Aprendidas}
+
+Os principais insights extraídos ao longo do desenvolvimento do \toolname{} foram:
+
+\begin{itemize}
+    \item O controle explícito de versões é essencial para garantir reprodutibilidade, especialmente com bibliotecas em evolução como SHAP.
+    \item Métodos de explicação devem ser escolhidos conforme a estrutura interna dos modelos e a versão da API utilizada.
+    \item Sistemas de tracking precisam ser intencionalmente projetados para oferecer rastreabilidade eficaz.
+    \item Abordagens probabilísticas e aproximações são cruciais para lidar com limitações teóricas em modelos explicáveis.
+    \item A compatibilidade entre diferentes formatos de dados (arrays vs. listas) requer lógica robusta de detecção e tratamento.
+    \item Feature names devem ser explicitamente passados para garantir interpretabilidade adequada dos gráficos.
+    \item Fallbacks e tratamento de erros são essenciais para sistemas de interpretabilidade robustos.
+\end{itemize}
+
+Esses aprendizados nortearam decisões futuras no projeto e demonstram a complexidade de integrar aprendizado de máquina automatizado com interpretabilidade e escalabilidade, especialmente considerando a evolução constante das bibliotecas e APIs utilizadas. 

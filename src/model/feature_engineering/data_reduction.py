@@ -46,54 +46,89 @@ class FeatureSelection(BaseEstimator, TransformerMixin):
         if anova and k_features is not None:
             self.anova_selector = SelectFpr(score_func=f_classif, alpha=k_features)
         if lasso:
-            self.lasso_selector = SelectFromModel(Lasso(alpha=self.alpha))
-
-
+            lasso_alpha = self.alpha if self.alpha is not None else 0.0001
+            self.lasso_selector = SelectFromModel(Lasso(alpha=lasso_alpha))
+        # ... (código existente)
+        self.applied_method = None  # Novo atributo para rastrear o método aplicado
+        self.pca_components_info = None  # Para armazenar informações dos componentes PCA
+        self.selected_features_info = None  # Para armazenar informações das features selecionadas
 
     def fit(self, X, y=None):
-        """
-        Fit the transformer to the input data.
+        if self.balance_classes =='RUS':
+            result = self.balance_data(X, y)
+            if isinstance(result, tuple) and len(result) == 2:
+                X, y = result
+        if self.balance_classes =='SMOTE':  
+            result = self.balance_data_SMOTE(X, y)
+            if isinstance(result, tuple) and len(result) == 2:
+                X, y = result
 
-        Parameters:
-        - X (array-like or pd.DataFrame): Input features.
-        - y (array-like or None, optional): Target variable (ignored).
-
-        Returns:
-        - self (FeatureSelection): Returns the fitted transformer.
-        """
-        if self.balance_classes:
-            logging.info("Balancing classes...")
-            X, y = self.balance_data(X, y)
         if isinstance(X, pd.DataFrame):
             self.feature_names = X.columns.tolist()
+            self.original_features = X.columns.tolist()  # Manter cópia dos nomes originais
+
         if self.pca:
             X = self.pca.fit_transform(X)
-            # Plotar o biplot PCA
-            self.plot_pca_biplot(X, self.pca, X_columns=self.feature_names, y=y)
-            logging.info("Feature selection using PCA...")
+            self.applied_method = 'pca'
+            n_comp = self.num_components if self.num_components is not None else X.shape[1]
+            self.pca_components_info = {
+                'explained_variance': self.pca.explained_variance_ratio_,
+                'components': self.pca.components_,
+                'feature_names': self.feature_names
+            }
+            self.feature_names = [f'PC_{i+1}' for i in range(n_comp)]
+            self.plot_pca_biplot(X, self.pca, self.original_features, y)
+            # print(f"Selected features (pca): {self.feature_names}")
 
-        if self.anova:
-           self.anova_selector.fit(X, y)
-           if isinstance(X, pd.DataFrame):
-              self.feature_names = X.columns[self.anova_selector.get_support()].tolist()
-           f_statistic, p_value = f_classif(X, y)  # Calcular estatística F e valor p
-           self.get_significant_features(f_statistic, p_value, self.feature_names, significance_threshold=0.05)
-           logging.info("Feature selection using ANOVA...")
-
-        if self.lasso:
+        elif self.anova:
+            self.anova_selector.fit(X, y)
+            self.applied_method = 'anova'
+            if isinstance(X, pd.DataFrame):
+                self.feature_names = X.columns[self.anova_selector.get_support()].tolist()
+            self.selected_features_info = {
+                'method': 'anova',
+                'features': self.feature_names,
+                'selected_features': self.feature_names,
+                'scores': self.anova_selector.scores_
+            }
+            self.plot_anova_features(self.anova_selector.scores_, 
+                                    self.feature_names,
+                                    title="ANOVA F-values Feature Importance")
+            # print(f"Selected features (anova): {self.feature_names}")
+        elif self.lasso:
             scaler = StandardScaler()
             X_scaled = scaler.fit_transform(X)
             lasso_cv = LassoCV(cv=5).fit(X_scaled, y)
             best_alpha = lasso_cv.alpha_
             lasso = Lasso(alpha=best_alpha)
             lasso.fit(X_scaled, y)
-            selected_features = X.columns[lasso.coef_ != 0].tolist()
-            self.feature_names = selected_features  # Update selected feature names
+            self.feature_names = X.columns[lasso.coef_ != 0].tolist()
+            self.applied_method = 'lasso'
+            self.selected_features_info = {
+                'method': 'lasso',
+                'features': self.feature_names,
+                'selected_features': self.feature_names,
+                'coefficients': lasso.coef_[lasso.coef_ != 0],
+                'alpha': best_alpha
+            }
             self.lasso_selector = SelectFromModel(lasso)
             self.lasso_selector.fit(X_scaled, y)
-            logging.info(f"Feature selection using LASSO with alpha={best_alpha}")
-            
+            self.plot_lasso_features(lasso.coef_, 
+                                   X.columns,
+                                   title="LASSO Coefficients Feature Importance")
+            # print(f"Selected features (lasso): {self.feature_names}")
+        
         return self
+
+    def get_transformation_info(self):
+        """Retorna informações detalhadas sobre a transformação aplicada"""
+        return {
+            'method': self.applied_method,
+            'pca_info': self.pca_components_info if self.applied_method == 'pca' else None,
+            'selected_features_info': self.selected_features_info if self.applied_method in ['anova', 'lasso'] else None,
+            'feature_names': self.feature_names,
+            'original_features': self.original_features
+        }
 
 
     def transform(self, X):
@@ -139,7 +174,7 @@ class FeatureSelection(BaseEstimator, TransformerMixin):
             smote = SMOTE(sampling_strategy='auto', random_state=42)
             X_resampled, y_resampled = smote.fit_resample(X, y)
             unique_classes_resampled, class_counts_resampled = np.unique(y_resampled, return_counts=True)
-            colored_message_not_feature = f"Classes after balancing: {dict(zip(unique_classes_resampled, class_counts_resampled))}"
+            colored_message_not_feature = f"[{Fore.YELLOW}Classes after balancing SMOTE: {dict(zip(unique_classes_resampled, class_counts_resampled))}{Style.RESET_ALL}]"
             self.logger.warning(colored_message_not_feature)
 
             return X_resampled, y_resampled
@@ -162,7 +197,7 @@ class FeatureSelection(BaseEstimator, TransformerMixin):
             under_sampler = RandomUnderSampler(sampling_strategy='auto', random_state=42)
             X_resampled, y_resampled = under_sampler.fit_resample(X, y)
             unique_classes_resampled, class_counts_resampled = np.unique(y_resampled, return_counts=True)
-            colored_message_not_feature = f"[{Fore.YELLOW}Classes after balancing: {dict(zip(unique_classes_resampled, class_counts_resampled))}{Style.RESET_ALL}]"
+            colored_message_not_feature = f"[{Fore.YELLOW}Classes after balancing RandomUnderSampler: {dict(zip(unique_classes_resampled, class_counts_resampled))}{Style.RESET_ALL}]"
             self.logger.warning(colored_message_not_feature)
 
 
@@ -272,7 +307,46 @@ class FeatureSelection(BaseEstimator, TransformerMixin):
 
         return top_significant_features['Feature'].tolist()
 
+    def plot_anova_features(self, scores, feature_names, title="ANOVA Feature Importance", top_n=20):
+        """Plot ANOVA F-values for feature importance."""
+        plt.figure(figsize=(10, 6))
+    
+        # Sort features by score
+        indices = np.argsort(scores)[-top_n:]
+    
+        # Create plot
+        plt.barh(range(len(indices)), scores[indices], align='center')
+        plt.yticks(range(len(indices)), [feature_names[i] for i in indices])
+        plt.xlabel('F-value')
+        plt.title(title)
+        plt.tight_layout()
+    
+        # Save plot
+        os.makedirs("results", exist_ok=True)
+        plt.savefig(f"results/anova_feature_importance.png")
+        plt.close()
 
+    def plot_lasso_features(self, coefficients, feature_names, title="LASSO Feature Importance"):
+        if coefficients is None or feature_names is None:
+            return
+        plt.figure(figsize=(10, 6))
+        indices = np.argsort(np.abs(coefficients))[::-1]
+        nonzero_indices = [i for i in indices if coefficients[i] != 0]
+        if len(nonzero_indices) > 0:
+            colors = ['red' if coefficients[i] < 0 else 'blue' for i in nonzero_indices]
+            plt.barh(range(len(nonzero_indices)), 
+                     [coefficients[i] for i in nonzero_indices], 
+                     color=colors, 
+                     align='center')
+            plt.yticks(range(len(nonzero_indices)), 
+                       [feature_names[i] for i in nonzero_indices])
+            plt.xlabel('Coefficient Value')
+            plt.title(title)
+            plt.tight_layout()
+            plt.axvline(x=0, color='black', linestyle='--')
+            os.makedirs("results", exist_ok=True)
+            plt.savefig(f"results/lasso_feature_importance.png")
+            plt.close()
 
 
     def plot_lasso_feature_importance(self, save_path="results"):
@@ -285,9 +359,6 @@ class FeatureSelection(BaseEstimator, TransformerMixin):
         Returns:
         - None
         """
-        if not self.lasso:
-            self.logger.warning("LASSO feature selection not applied.")
-            return
 
         lasso_coef = self.lasso_selector.estimator_.coef_
         selected_features = self.feature_names
