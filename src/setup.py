@@ -43,7 +43,7 @@ setup(
     extras_require={
         "pdf": [
             "weasyprint==60.2",
-            "pdfkit==1.2.1",
+            "pdfkit",
             "playwright==1.44.0",
             "selenium==4.18.1",
             "Pillow==10.3.0",

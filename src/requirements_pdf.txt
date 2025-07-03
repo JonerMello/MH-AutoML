@@ -11,7 +11,7 @@
 weasyprint==60.2
 
 # Método 2: pdfkit + wkhtmltopdf
-pdfkit==1.2.1
+pdfkit
 
 # Método 3: Conversão HTML para imagem
 playwright==1.44.0
